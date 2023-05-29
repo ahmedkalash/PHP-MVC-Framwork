@@ -1,0 +1,16 @@
+{
+    "name": "kalash/php-mvc",
+    "autoload": {
+        "psr-4": {
+            "app\\core\\": "core/",
+            "app\\controllers\\": "controllers/"
+        }
+    },
+    "authors": [
+        {
+            "name": "ahmed",
+            "email": "ahmedkalash513@gmail.com"
+        }
+    ]
+
+}
