@@ -4,94 +4,133 @@ namespace app\core;
 
 class Request
 {
-    protected array $getData;
-    protected array $postData;
-    protected array $cookiesData;
-    protected array $headersData;
-    protected string $path;
-    protected string $method;
-    public function __construct()
-    {
-        $this->setGetData();
-        $this->setPostData();
-        $this->setCookiesData();
-        $this->setHeadersData();
-        $this->setPath();
-        $this->setMethod();
+    protected array $getData=[];
+    protected array $postData=[];
+    protected array $cookiesData=[];
+    protected array $headersData=[];
+    protected string $path='/';
+    protected string $method='get';
+
+    /**
+     * @throws \Exception
+     */
+    public function __construct(
+        ?array $getData=null,
+        ?array $postData=null,
+        ?array $cookiesData=null,
+        ?array $headersData=null,
+        string $path='/',
+        string $method='get'
+    ){
+        $this->setGetData($getData);
+        $this->setPostData($postData);
+        $this->setCookiesData($cookiesData);
+        $this->setHeadersData($headersData);
+        $this->setPath($path);
+        $this->setMethod($method);
     }
 
 
-    public function setGetData(): void
+
+    public function setGetData(?array $data=null):void
     {
-        foreach ($_GET as $key=>$value){
-            $filterResult = filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            if($filterResult != 0 && $filterResult != null){
-                $this->getData[$key]= $filterResult;
-            }
+        $getData = InputSanitizer::sanitizeGetData($data??$_GET);
+        foreach ($getData as $key=>$value){
+            $this->getData[$key]= $value;
         }
     }
 
 
-    public function setPostData(): void
+
+    public function setPostData(?array $data=null): void
     {
-        foreach ($_POST as $key=>$value){
-            $filterResult = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            if($filterResult != 0 && $filterResult != null){
-                $this->postData[$key]= $filterResult;
-            }
+        $postData = InputSanitizer::sanitizePostData($data??$_POST);
+        foreach ($postData as $key=>$value){
+            $this->postData[$key]= $value;
+        }
+    }
+
+    private function normalizeRequestURI(string $uri)
+    {
+        // Remove duplicate slashes from the URI
+        $uri = preg_replace('#/+#', '/', $uri);
+
+        if(strlen($uri) > 1){
+            $uri = rtrim($uri, '/');
+        }
+
+        return urldecode($uri);
+    }
+
+
+    public function setCookiesData(?array $cookies=null): void
+    {
+        $cookies = $cookies??$_COOKIE;
+        $cookies = InputSanitizer::sanitizeCookies($cookies);
+        foreach ($cookies as $key=>$value){
+            $this->cookiesData[$key]= $value;
         }
     }
 
 
-    public function setCookiesData(): void
-    {
-        foreach ($_COOKIE as $key=>$value){
-            $filterResult = filter_input(INPUT_COOKIE, $key, FILTER_SANITIZE_SPECIAL_CHARS);
-            if($filterResult != 0 && $filterResult != null){
-                $this->cookiesData[$key]= $filterResult;
-            }
-        }
-    }
 
-
-    public function setHeadersData(): void
+    public static function getHeadersFrom_SERVER(): array
     {
-        // Looping through all headers
+        $headers=[];
         foreach ($_SERVER as $key => $value) {
             if (str_starts_with($key, 'HTTP_')) {
-                $headerName = str_replace('HTTP_', '', $key);
-                $filterResult = filter_input(INPUT_SERVER, $headerName, FILTER_SANITIZE_SPECIAL_CHARS);
-                if($filterResult != 0 && $filterResult != null){
-                    $this->headersData[$headerName]= $filterResult;
-                }
+                $key = str_replace('HTTP_', '', $key);
+                $headers[$key]= $value;
             }
         }
+
+        return InputSanitizer::sanitizeHeaders($headers);
     }
-
-
-    public function setPath(): void
+    public function setHeadersData(?array $headers=null): void
     {
-        $path = explode('?',$_SERVER["REQUEST_URI"])[0] ?? '/';
-        if ($path!='/' && $path[-1]=='/'){
-            $this->path = substr_replace($path,'',-1);
-        }
-        else{
-            $this->path=$path;
+        $headers = isset($headers) ? InputSanitizer::sanitizeHeaders($headers) : static::getHeadersFrom_SERVER();
+        foreach ($headers as $headerName => $headerValue) {
+            $this->headersData[$headerName]= $headerValue;
         }
     }
 
-
-    public function setMethod(): void
+    private function getRequestURIFromServer(): string
     {
-        $this->method = strtolower($_SERVER["REQUEST_METHOD"]);
+        return $path ?? (explode('?',$_SERVER["REQUEST_URI"])[0] ?? '/');
+    }
+
+    public function setPath(?string $path=null): void
+    {
+        $this->path = $this->normalizeRequestURI($this->getRequestURIFromServer());
     }
 
 
-    public function getData(string $varName=null):null|int|string|float|bool|array
+    /**
+     * @throws \Exception
+     */
+    public function setMethod(?string $method=null): void
     {
-        if($varName){
-            if(array_key_exists($varName, $this->getData)){
-                return $this->getData[$varName];
+        if(isset($method)){
+            if(!in_array($method, static::supportedMethods(),true)){
+                throw new \Exception('Invalid Request Method.');
+            }
+            $this->method = $method;
+        }else {
+            $this->method = strtolower($_SERVER["REQUEST_METHOD"]);
+        }
+    }
+
+    private static function supportedMethods(): array
+    {
+        return ['get','post'];
+    }
+
+
+    public function getData(string $key=null):null|int|string|float|bool|array
+    {
+        if($key){
+            if(array_key_exists($key, $this->getData)){
+                return $this->getData[$key];
             }
             return null;
         }
@@ -99,11 +138,11 @@ class Request
     }
 
 
-    public function postData(string $varName=null):null|int|string|float|bool|array
+    public function postData(string $key=null):null|int|string|float|bool|array
     {
-        if($varName){
-            if(array_key_exists($varName, $this->postData)){
-                return $this->postData[$varName];
+        if($key){
+            if(array_key_exists($key, $this->postData)){
+                return $this->postData[$key];
             }
             return null;
         }

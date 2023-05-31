@@ -3,7 +3,8 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 //phpinfo();
-
+//echo "<pre>";
+//var_dump(apache_request_headers());
 
 $app = new \app\core\Application();
 

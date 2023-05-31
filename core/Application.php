@@ -2,11 +2,14 @@
 
 namespace app\core;
 
+use app\core\view\ViewHandler;
+
 class Application
 {
     public Router $router;
     public Request $request;
     public Response $response;
+    public ViewHandler $viewHandler;
 
     public const ROOT_DIR = __DIR__."/../";
     public const HELPERS_DIR = self::ROOT_DIR."/core/helpers/";
@@ -18,7 +21,8 @@ class Application
         self::$app=$this;
         $this->request =new Request();
         $this->response =new Response();
-        $this->router =new Router($this->request, $this->response);
+        $this->viewHandler =new ViewHandler();
+        $this->router =new Router($this->request, $this->response, $this->viewHandler);
     }
 
     public function run()

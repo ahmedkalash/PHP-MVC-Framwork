@@ -10,11 +10,12 @@ use app\core\view\ViewPath;
 class Router
 {
     protected array $routes=[];
-    private ViewHandler $viewHandler;
+
 
     public function __construct(
         protected Request $request,
-        protected Response $response
+        protected Response $response,
+        private ViewHandler $viewHandler
     ) {
          $this->viewHandler= new ViewHandler();
     }

@@ -7,6 +7,9 @@ use app\core\Application;
 class ViewHandler
 {
 
+    /**
+     * @throws \Exception
+     */
     public function render(string $view, array $params = []): string
     {
         $viewSections = $this->viewSections($view, $params);
