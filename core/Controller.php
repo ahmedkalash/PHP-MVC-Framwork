@@ -2,15 +2,20 @@
 
 namespace app\core;
 
-use app\core\view\ViewHandler;
+
+use Illuminate\Container\Container;
+use Twig\Environment;
 
 abstract class Controller
 {
-    protected ViewHandler $viewHandler;
-    protected Request $request;
-    public function __construct()
-    {
-        $this->viewHandler= new ViewHandler();
-        $this->request= new Request();
+
+    public function __construct(
+        public Request     $request,
+        public Response    $response,
+        public Container   $container,
+        public Environment $twig,
+    ){
+
+
     }
 }

@@ -3,11 +3,11 @@
 namespace app\controllers;
 
 use app\core\Controller;
+use app\core\view\ViewPath;
 
 class HomeController extends Controller
 {
     public function index(){
-        var_dump(urldecode($_SERVER['REQUEST_URI']));
-        return $this->viewHandler->render("home");
+        return $this->twig->render(ViewPath::HOME);
     }
 }

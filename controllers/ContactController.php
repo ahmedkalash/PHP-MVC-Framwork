@@ -14,7 +14,7 @@ class ContactController extends Controller
             'firstName'=>'ahmed',
             'age'=>123
         ];
-        return $this->viewHandler->render(ViewPath::CONTACT, $data);
+        return $this->twig->render(ViewPath::CONTACT, $data);
     }
     public function store(Request $request){
          return "Handling submitted data in ContactController::store() ";

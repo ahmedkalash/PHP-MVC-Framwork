@@ -11,6 +11,11 @@
             "name": "ahmed",
             "email": "ahmedkalash513@gmail.com"
         }
-    ]
+    ],
+    "require": {
+
+        "twig/twig": "^3.0",
+        "illuminate/container": "^10.13"
+    }
 
 }

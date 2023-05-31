@@ -2,9 +2,11 @@
 
 namespace app\core\view;
 
-class ViewPath
+class  ViewPath
 {
-    public const ERROR_404 ="errors/_404";
-    public const CONTACT ="contact";
+
+    public const ERROR_404 = "errors/_404.twig";
+    public const CONTACT = "contact.twig";
+    public const HOME = "home.twig";
 
 }

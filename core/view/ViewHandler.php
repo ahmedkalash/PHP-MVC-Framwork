@@ -3,12 +3,13 @@
 namespace app\core\view;
 
 use app\core\Application;
+use Exception;
 
 class ViewHandler
 {
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function render(string $view, array $params = []): string
     {
@@ -30,12 +31,12 @@ class ViewHandler
     protected function layoutContent(string $layout)
     {
         ob_start();
-        include_once Application::VIEWS_DIR . "layouts/$layout.php";
+        include_once Application::VIEWS_DIR . "/layouts/$layout.php";
         return ob_get_clean();
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     protected function viewSections(string $view, $params): array
     {
@@ -45,18 +46,10 @@ class ViewHandler
             return call_user_func($viewContent, $params);
         }
 
-        throw (new \Exception('Invalid View'));
+        throw (new Exception('Invalid View'));
     }
 
-    protected function viewContent___old(string $view, $params): bool|string
-    {
-        foreach ($params as $name => $value) {
-            $$name = $value;
-        }
-        ob_start();
-        include_once Application::ROOT_DIR . "views/$view.php";
-        return ob_get_clean();
-    }
+
     
 
 }

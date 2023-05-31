@@ -2,10 +2,12 @@
 
 namespace app\core;
 
-
-
-use app\core\view\ViewHandler;
 use app\core\view\ViewPath;
+use Illuminate\Container\Container;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class Router
 {
@@ -15,10 +17,10 @@ class Router
     public function __construct(
         protected Request $request,
         protected Response $response,
-        private ViewHandler $viewHandler
-    ) {
-         $this->viewHandler= new ViewHandler();
-    }
+        protected Container $container,
+        protected Environment $twig,
+
+    ) {}
 
     public function register(string $method, string $path, \Closure|string|array $action)
     {
@@ -39,6 +41,12 @@ class Router
     {
        return isset($this->routes[$method][$path]);
     }
+
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError|\Illuminate\Contracts\Container\BindingResolutionException
+     */
     public function resolve()
     {
         $path = $this->request->path();
@@ -50,17 +58,20 @@ class Router
                 return call_user_func($action, $this->request);
             }
             elseif (is_string($action)){
-                return $this->viewHandler->render($action);
+                return $this->twig->render($action);
             }
-            else{
-                $controller = new $action[0]();
+            elseif (class_exists($action[0])){
+                $className = $action[0];
+                $controller = $this->container->make($className);
                 $method=$action[1];
-                return call_user_func([$controller,$method],$this->request);
+
+                // todo use reflection API to perform method injection
+                return call_user_func([$controller,$method], $this->request);
             }
         }
         else{
            $this->response->setStatusCode(404);
-           return $this->viewHandler->render(ViewPath::ERROR_404);
+           return $this->twig->render(ViewPath::ERROR_404);
         }
     }
 

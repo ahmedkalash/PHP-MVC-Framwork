@@ -25,11 +25,12 @@ class Response
      * Set the HTTP response status code.
      *
      * @param int $statusCode The HTTP status code to set.
-     * @return void
+     * @return static
      */
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $statusCode):static
     {
         $this->statusCode = $statusCode;
+        return $this ;
     }
 
 
@@ -41,15 +42,16 @@ class Response
      * @param bool $replace Whether to replace an existing header with the same name.
      *                      If set to false, the new value will be appended to the existing headers with the same name.
      *                      If set to true (default), the existing header value will be replaced.
-     * @return void
+     * @return static
      */
-    public function setHeader(string $name, string $value, bool $replace = true,)
+    public function setHeader(string $name, string $value, bool $replace = true,): static
     {
         if(!$replace){
             $this->headers[$name][] = $value;
         } else{
             $this->headers[$name] = $value;
         }
+        return $this ;
     }
 
     /**
@@ -57,23 +59,26 @@ class Response
      * Sets the Content-Type header to text/html, indicating that the response contains HTML content.
      *
      * @param string $HTML The HTML content to set.
-     * @return void
+     * @return static
      */
-    public function setHtmlContent(string $HTML){
+    public function setHtmlContent(string $HTML): static
+    {
         $this->setHeader('Content-Type', 'text/html');
         $this->content =  $HTML;
+        return $this ;
     }
 
     /**
      * Set the JSON response content.
-     * Sets the Content-Type header to ta pplication/json, indicating that the response contains json content.
+     * Sets the Content-Type header to ta application/json, indicating that the response contains json content.
      * @param array $json The JSON content to set.
-     * @return void
+     * @return static
      */
-    public function setJsonContent(array $json)
+    public function setJsonContent(array $json): static
     {
         $this->setHeader('Content-Type', 'application/json');
         $this->content = json_encode($json, JSON_PRETTY_PRINT);
+        return $this ;
     }
 
 

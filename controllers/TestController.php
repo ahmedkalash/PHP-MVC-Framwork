@@ -7,7 +7,9 @@ use app\core\Application;
 class TestController extends \app\core\Controller
 {
     public function test(){
-        var_dump($this->request);
+
+        return  $this->request->path();
+
     }
 
 }
