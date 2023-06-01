@@ -4,23 +4,18 @@ namespace app\core;
 
 class Request
 {
-    protected array $getData=[];
-    protected array $postData=[];
-    protected array $cookiesData=[];
-    protected array $headersData=[];
-    protected string $path='/';
-    protected string $method='get';
+
 
     /**
      * @throws \Exception
      */
     public function __construct(
-        ?array $getData=null,
-        ?array $postData=null,
-        ?array $cookiesData=null,
-        ?array $headersData=null,
-        string $path='/',
-        string $method='get'
+        protected ?array $getData=null,
+        protected ?array $postData=null,
+        protected ?array $cookiesData=null,
+        protected ?array $headersData=null,
+        protected ?string $path=null,
+        protected ?string $method=null
     ) {
         $this->setGetData($getData);
         $this->setPostData($postData);
@@ -101,7 +96,8 @@ class Request
 
     public function setPath(?string $path=null): void
     {
-        $this->path = $this->normalizeRequestURI($this->getRequestURIFromServer());
+        $path = $path?? $this->getRequestURIFromServer();
+        $this->path = $this->normalizeRequestURI($path);
     }
 
 
