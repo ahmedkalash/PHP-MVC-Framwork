@@ -4,14 +4,12 @@ namespace app\core;
 
 class InputSanitizer
 {
-
-
     public static function sanitizeGetData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedData = [];
-        foreach ($data as $key=>$value){
+        foreach ($data as $key=>$value) {
             $filterResult = filter_input(INPUT_GET, $key, $filter);
-            if($filterResult != 0 && $filterResult != null){
+            if($filterResult != 0 && $filterResult != null) {
                 $sanitizedData[$key]= $filterResult;
             }
         }
@@ -21,9 +19,9 @@ class InputSanitizer
     public static function sanitizePostData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedData = [];
-        foreach ($data as $key=>$value){
+        foreach ($data as $key=>$value) {
             $filterResult = filter_input(INPUT_POST, $key, $filter);
-            if($filterResult != 0 && $filterResult != null){
+            if($filterResult != 0 && $filterResult != null) {
                 $sanitizedData[$key]= $filterResult;
             }
         }
@@ -34,9 +32,9 @@ class InputSanitizer
     public static function sanitizeCookies(array $cookies, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedCookies = [];
-        foreach ($cookies as $key=>$value){
+        foreach ($cookies as $key=>$value) {
             $filterResult = filter_input(INPUT_COOKIE, $key, $filter);
-            if($filterResult != 0 && $filterResult != null){
+            if($filterResult != 0 && $filterResult != null) {
                 $sanitizedCookies[$key]= $filterResult;
             }
         }
@@ -50,7 +48,7 @@ class InputSanitizer
         $sanitizedHeaders=[];
         foreach ($headers as $headerName => $headerValue) {
             $filterResult = filter_input(INPUT_SERVER, 'HTTP_'.$headerName, $filter);
-            if($filterResult !== 0 && $filterResult != null){
+            if($filterResult !== 0 && $filterResult != null) {
                 $sanitizedHeaders[$headerName]= $filterResult;
             }
         }

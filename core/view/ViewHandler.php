@@ -7,18 +7,17 @@ use Exception;
 
 class ViewHandler
 {
-
     /**
      * @throws Exception
      */
     public function render(string $view, array $params = []): string
     {
         $viewSections = $this->viewSections($view, $params);
-        if(isset($viewSections["layout"])){
+        if(isset($viewSections["layout"])) {
             $layoutContent = $this->layoutContent($viewSections["layout"]);
             $html = $layoutContent;
             foreach ($viewSections as $sectionName => $sectionContent) {
-                if($sectionName != "layout"){
+                if($sectionName != "layout") {
                     $html = str_replace("{{{$sectionName}}}", $sectionContent, $html);
                 }
             }
@@ -50,6 +49,6 @@ class ViewHandler
     }
 
 
-    
+
 
 }

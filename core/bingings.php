@@ -38,9 +38,3 @@ $app = $container->make(\app\core\Application::class);
 $container->singleton(\app\core\Application::class, function () use ($app) {
     return $app;
 });
-
-
-
-
-
-

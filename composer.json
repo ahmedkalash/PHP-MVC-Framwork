@@ -8,7 +8,7 @@
     },
     "authors": [
         {
-            "name": "ahmed",
+            "name": "Ahmed Kalash",
             "email": "ahmedkalash513@gmail.com"
         }
     ],
@@ -16,6 +16,11 @@
 
         "twig/twig": "^3.0",
         "illuminate/container": "^10.13"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.17"
+    },
+    "scripts": {
+        "php-cs-fixer": "php-cs-fixer --rules=@PSR12"
     }
-
 }

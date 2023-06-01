@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Twig\Environment;
@@ -12,7 +11,6 @@ use Twig\Error\SyntaxError;
 
 class Application
 {
-
     public const ROOT_DIR = __DIR__ . "/../";
     public const HELPERS_DIR = self::ROOT_DIR . "core/helpers";
     public const VIEWS_DIR = self::ROOT_DIR . "views";
@@ -27,7 +25,7 @@ class Application
         public Container   $container,
         public Environment $twig,
         public Router      $router
-    ){
+    ) {
         self::$app = $this;
     }
 
@@ -51,7 +49,7 @@ class Application
             $response->send();
         } elseif (is_string($response)) {
             $this->response->setHtmlContent($response)->send();
-        } elseif (is_array($response)){
+        } elseif (is_array($response)) {
             $this->response->setJsonContent($response)->send();
         }
     }

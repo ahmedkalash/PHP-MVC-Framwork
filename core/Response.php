@@ -19,7 +19,8 @@ class Response
         protected int   $statusCode = 200,
         protected mixed $content=null,
         protected mixed $files=null,
-    ){}
+    ) {
+    }
 
     /**
      * Set the HTTP response status code.
@@ -27,7 +28,7 @@ class Response
      * @param int $statusCode The HTTP status code to set.
      * @return static
      */
-    public function setStatusCode(int $statusCode):static
+    public function setStatusCode(int $statusCode): static
     {
         $this->statusCode = $statusCode;
         return $this ;
@@ -44,11 +45,11 @@ class Response
      *                      If set to true (default), the existing header value will be replaced.
      * @return static
      */
-    public function setHeader(string $name, string $value, bool $replace = true,): static
+    public function setHeader(string $name, string $value, bool $replace = true): static
     {
-        if(!$replace){
+        if(!$replace) {
             $this->headers[$name][] = $value;
-        } else{
+        } else {
             $this->headers[$name] = $value;
         }
         return $this ;
@@ -81,6 +82,10 @@ class Response
         return $this ;
     }
 
+    public function redirect(string $to)
+    {
+        // todo implement this function
+    }
 
     /**
      * Send the HTTP response.
@@ -92,11 +97,11 @@ class Response
         http_response_code($this->statusCode);
 
         foreach ($this->headers as $headerName => $headerValue) {
-            if(is_array($headerValue)){
-                foreach ($headerValue as $value){
-                    header($headerName . ': ' . $value,false);
+            if(is_array($headerValue)) {
+                foreach ($headerValue as $value) {
+                    header($headerName . ': ' . $value, false);
                 }
-            }else{
+            } else {
                 header($headerName . ': ' . $headerValue);
             }
 

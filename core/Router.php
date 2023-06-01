@@ -19,8 +19,8 @@ class Router
         protected Response $response,
         protected Container $container,
         protected Environment $twig,
-
-    ) {}
+    ) {
+    }
 
     public function register(string $method, string $path, \Closure|string|array $action)
     {
@@ -39,7 +39,7 @@ class Router
 
     public function routeExists(string $method, string $path): bool
     {
-       return isset($this->routes[$method][$path]);
+        return isset($this->routes[$method][$path]);
     }
 
     /**
@@ -52,15 +52,13 @@ class Router
         $path = $this->request->path();
         $method = $this->request->method();
 
-        if($this->routeExists($method, $path)){
+        if($this->routeExists($method, $path)) {
             $action = $this->routes[$method][$path];
-            if(is_callable($action)){
+            if(is_callable($action)) {
                 return call_user_func($action, $this->request);
-            }
-            elseif (is_string($action)){
+            } elseif (is_string($action)) {
                 return $this->twig->render($action);
-            }
-            elseif (class_exists($action[0])){
+            } elseif (class_exists($action[0])) {
                 $className = $action[0];
                 $controller = $this->container->make($className);
                 $method=$action[1];
@@ -68,14 +66,11 @@ class Router
                 // todo use reflection API to perform method injection
                 return call_user_func([$controller,$method], $this->request);
             }
-        }
-        else{
-           $this->response->setStatusCode(404);
-           return $this->twig->render(ViewPath::ERROR_404);
+        } else {
+            $this->response->setStatusCode(404);
+            return $this->twig->render(ViewPath::ERROR_404);
         }
     }
 
 
 }
-
-
