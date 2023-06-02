@@ -4,6 +4,7 @@ namespace app\core;
 
 class InputSanitizer
 {
+    // todo handel how to sanitize a data from a given array
     public static function sanitizeGetData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedData = [];

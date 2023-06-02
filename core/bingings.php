@@ -16,8 +16,8 @@ $container->singleton(Environment::class, function () {
 });
 
 
-$request = $container->make(\app\core\Request::class);
-$container->singleton(\app\core\Request::class, function () use ($request) {
+$request = new \app\core\Request\Request($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES);
+$container->singleton(\app\core\Request\RequestInterface::class, function () use ($request) {
     return $request;
 });
 

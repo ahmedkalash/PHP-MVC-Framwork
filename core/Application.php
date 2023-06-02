@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\core\Request\RequestInterface;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Twig\Environment;
@@ -20,7 +21,7 @@ class Application
 
 
     public function __construct(
-        public Request     $request,
+        public RequestInterface     $request,
         public Response    $response,
         public Container   $container,
         public Environment $twig,
