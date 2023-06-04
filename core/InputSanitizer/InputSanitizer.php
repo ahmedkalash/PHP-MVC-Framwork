@@ -1,10 +1,11 @@
 <?php
 
-namespace app\core;
+namespace app\core\InputSanitizer;
 
-class InputSanitizer
+class InputSanitizer implements InputSanitizerInterface
 {
-    public static function sanitizeGetData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
+
+    public function sanitizeGetData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedData = [];
         foreach ($data as $key=>$value) {
@@ -16,7 +17,7 @@ class InputSanitizer
         return $sanitizedData;
     }
 
-    public static function sanitizePostData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
+    public function sanitizePostData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedData = [];
         foreach ($data as $key=>$value) {
@@ -29,7 +30,7 @@ class InputSanitizer
     }
 
 
-    public static function sanitizeCookies(array $cookies, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
+    public function sanitizeCookies(array $cookies, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedCookies = [];
         foreach ($cookies as $key=>$value) {
@@ -43,7 +44,7 @@ class InputSanitizer
 
 
 
-    public static function sanitizeHeaders(array $headers, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
+    public function sanitizeHeaders(array $headers, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
         $sanitizedHeaders=[];
         foreach ($headers as $headerName => $headerValue) {

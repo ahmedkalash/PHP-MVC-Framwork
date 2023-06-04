@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use app\core\Controller;
+use app\core\Controller\Controller;
 use app\core\view\ViewPath;
 
 class HomeController extends Controller

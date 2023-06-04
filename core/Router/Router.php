@@ -1,7 +1,9 @@
 <?php
 
-namespace app\core;
+namespace app\core\Router;
 
+use app\core\Request\RequestInterface;
+use app\core\Response\ResponseInterface;
 use app\core\view\ViewPath;
 use Illuminate\Container\Container;
 use Twig\Environment;
@@ -9,22 +11,22 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class Router
+class Router implements RouterInterface
 {
-    protected array $routes=[];
+    protected array $routes = [];
 
 
     public function __construct(
-        protected Request $request,
-        protected Response $response,
-        protected Container $container,
-        protected Environment $twig,
+        protected RequestInterface  $request,
+        protected ResponseInterface $response,
+        protected Container         $container,
+        protected Environment       $twig,
     ) {
     }
 
-    public function register(string $method, string $path, \Closure|string|array $action)
+    protected function register(string $method, string $path, \Closure|string|array $action)
     {
-        $this->routes[$method][$path]=$action;
+        $this->routes[$method][$path] = $action;
     }
 
     public function get(string $path, \Closure|string|array $action)
@@ -46,30 +48,32 @@ class Router
      * @throws RuntimeError
      * @throws SyntaxError
      * @throws LoaderError|\Illuminate\Contracts\Container\BindingResolutionException
+     * @throws \Exception
      */
-    public function resolve()
+    public function resolve(): array|string|ResponseInterface
     {
         $path = $this->request->path();
         $method = $this->request->method();
 
-        if($this->routeExists($method, $path)) {
+        if ($this->routeExists($method, $path)) {
             $action = $this->routes[$method][$path];
-            if(is_callable($action)) {
-                return call_user_func($action, $this->request);
+
+            if (is_callable($action)) {
+                return $this->container->call($action);
             } elseif (is_string($action)) {
                 return $this->twig->render($action);
             } elseif (class_exists($action[0])) {
                 $className = $action[0];
                 $controller = $this->container->make($className);
-                $method=$action[1];
-
-                // todo use reflection API to perform method injection
-                return call_user_func([$controller,$method], $this->request);
+                $method = $action[1];
+                return $this->container->call([$controller, $method]);
+            } else {
+                throw new \Exception('Un known action '.$action);
             }
-        } else {
-            $this->response->setStatusCode(404);
-            return $this->twig->render(ViewPath::ERROR_404);
         }
+        $this->response->setStatusCode(404);
+        return $this->twig->render(ViewPath::ERROR_404);
+
     }
 
 

@@ -2,13 +2,14 @@
 
 namespace app\controllers;
 
-use app\core\Controller;
-use app\core\Request;
+use app\core\Controller\Controller;
+use app\core\Request\Request;
 use app\core\view\ViewPath;
 
 class ContactController extends Controller
 {
-    public function index(){
+    public function index(): string
+    {
         $data = [
             'lastName'=>'kalash',
             'firstName'=>'ahmed',
@@ -16,7 +17,9 @@ class ContactController extends Controller
         ];
         return $this->twig->render(ViewPath::CONTACT, $data);
     }
-    public function store(Request $request){
-         return "Handling submitted data in ContactController::store() ";
+    public function store(Request $request)
+    {
+        //var_dump($request);
+        return "Handling submitted data in ContactController::store() ";
     }
 }
