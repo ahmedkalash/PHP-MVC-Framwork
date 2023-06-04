@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core\Controller;
 
 use app\core\Request\RequestInterface;

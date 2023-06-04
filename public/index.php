@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /*** @var $container Illuminate\Container\Container*/
 /*** @var $app \app\core\Application*/
 require_once __DIR__ . '/../vendor/autoload.php';

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 use Twig\Environment;
 
 $container = new Illuminate\Container\Container();
@@ -12,6 +12,7 @@ $container->singleton(Environment::class, function () {
     $loader = new \Twig\Loader\FilesystemLoader(\app\core\Application::VIEWS_DIR);
     return new \Twig\Environment($loader, [
         'cache' => \app\core\Application::STORAGE_DIR . '/cache',
+        'auto_reload'=>true
     ]);
 });
 

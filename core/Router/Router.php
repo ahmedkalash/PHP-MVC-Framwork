@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core\Router;
 
 use app\core\Request\RequestInterface;
@@ -50,7 +50,7 @@ class Router implements RouterInterface
      * @throws LoaderError|\Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Exception
      */
-    public function resolve(): array|string|ResponseInterface
+    public function resolve(): array|string|ResponseInterface|null
     {
         $path = $this->request->path();
         $method = $this->request->method();

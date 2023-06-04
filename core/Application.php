@@ -1,10 +1,9 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core;
 
 use app\core\Request\RequestInterface;
 use app\core\Response\ResponseInterface;
-use app\core\Router\Router;
 use app\core\Router\RouterInterface;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -12,6 +11,7 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
+use function PHPUnit\Framework\isNull;
 
 class Application
 {
