@@ -3,6 +3,9 @@
 namespace app\core;
 
 use app\core\Request\RequestInterface;
+use app\core\Response\ResponseInterface;
+use app\core\Router\Router;
+use app\core\Router\RouterInterface;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Twig\Environment;
@@ -22,10 +25,10 @@ class Application
 
     public function __construct(
         public RequestInterface     $request,
-        public Response    $response,
+        public ResponseInterface    $response,
         public Container   $container,
         public Environment $twig,
-        public Router      $router
+        public RouterInterface      $router
     ) {
         self::$app = $this;
     }
@@ -46,7 +49,7 @@ class Application
 
     public function handelResponse($response): void
     {
-        if ($response instanceof Response) {
+        if ($response instanceof ResponseInterface) {
             $response->send();
         } elseif (is_string($response)) {
             $this->response->setHtmlContent($response)->send();

@@ -2,7 +2,7 @@
 
 namespace app\core\Request;
 
-use app\core\InputSanitizer;
+use app\core\InputSanitizer\InputSanitizerInterface;
 
 class Request implements RequestInterface
 {
@@ -13,6 +13,7 @@ class Request implements RequestInterface
     protected array $server;
 
     protected array $files;
+
     protected array $headers;
 
     protected string $path;
@@ -23,11 +24,12 @@ class Request implements RequestInterface
      * @throws \Exception
      */
     public function __construct(
-        array $getData,
-        array $postData,
-        array $cookies,
-        array $server,
-        array $files
+        array                             $getData,
+        array                             $postData,
+        array                             $cookies,
+        array                             $server,
+        array                             $files,
+        protected InputSanitizerInterface $inputSanitizer
     ) {
         $this->setServer($server);
         $this->setGetData($getData);
@@ -46,7 +48,7 @@ class Request implements RequestInterface
      */
     protected function setGetData(array $data): void
     {
-        $this->getData = InputSanitizer::sanitizeGetData($data);
+        $this->getData = $this->inputSanitizer->sanitizeGetData($data);
     }
 
     /**
@@ -57,7 +59,7 @@ class Request implements RequestInterface
      */
     protected function setPostData(array $data): void
     {
-        $this->postData = InputSanitizer::sanitizePostData($data);
+        $this->postData = $this->inputSanitizer->sanitizePostData($data);
     }
 
     /**
@@ -68,7 +70,7 @@ class Request implements RequestInterface
      */
     public function setCookies($cookies): void
     {
-        $this->cookies = InputSanitizer::sanitizeCookies($cookies);
+        $this->cookies = $this->inputSanitizer->sanitizeCookies($cookies);
     }
 
     /**
@@ -91,7 +93,7 @@ class Request implements RequestInterface
             }
         }
 
-        return InputSanitizer::sanitizeHeaders($headers);
+        return $this->inputSanitizer->sanitizeHeaders($headers);
     }
 
 
@@ -143,10 +145,10 @@ class Request implements RequestInterface
     }
 
     /**
-     * Retrieves a specific value from the GET data or all the GET data is the $key is NULL.
+     * Retrieves a specific value from the GET data or all the GET data is the $key is NULL or NULL if it is not found.
      *
      * @param string|null $key The data key to retrieve.
-     * @return null|int|string|float|bool|array All The GET data or the value of the specified key.
+     * @return null|int|string|float|bool|array All The GET data or the value of the specified key or NULL if it is not found.
      */
     public function getData(string $key = null): null|int|string|float|bool|array
     {
@@ -160,10 +162,10 @@ class Request implements RequestInterface
     }
 
     /**
-     * Retrieves a specific value from the POST data or all the POST data is the $key is NULL.
+     * Retrieves a specific value from the POST data or all the POST data is the $key is NULL or NULL if it is not found.
      *
      * @param string|null $key The data key to retrieve.
-     * @return null|int|string|float|bool|array All The POST data or the value of the specified key.
+     * @return null|int|string|float|bool|array All The POST data or the value of the specified key  or NULL if it is not found.
      */
     public function postData(string $key = null): null|int|string|float|bool|array
     {
@@ -238,14 +240,30 @@ class Request implements RequestInterface
     }
 
 
-    public function allData(string $key = null): null|int|string|float|bool|array
+    /**
+     * Retrieves all the data sent to the server in both get and post method.
+     * * Note that data in POST will override the data in Get that has the same key.
+     * @return null|int|string|float|bool|array
+     */
+    public function allData(): null|int|string|float|bool|array
     {
-        // TODO: Implement allData() method.
-        return null;
+        return array_merge($this->getData, $this->postData);
+    }
+
+
+    /**
+     * Retrieves a specific value from the POST data. If it is not found it will search in the GET data.
+     * * Note that data in POST will override the data in Get that has the same key.
+     * @param string $key The data key to retrieve.
+     * @return null|int|string|float|bool|array The value of the specified key or NULL if it is not found.
+     */
+    public function input(string $key): null|int|string|float|bool|array
+    {
+        return $this->postData($key) ?? $this->getData($key);
     }
 
     private function setServer(array $server)
     {
-       $this->server= $server;
+        $this->server = $server;
     }
 }

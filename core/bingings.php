@@ -15,23 +15,45 @@ $container->singleton(Environment::class, function () {
     ]);
 });
 
+$container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 
-$request = new \app\core\Request\Request($_GET, $_POST, $_COOKIE, $_SERVER, $_FILES);
+
+$request = $container->make(\app\core\Request\Request::class, [
+    'getData'=>$_GET,
+    'postData'=>$_POST,
+    'cookies' =>$_COOKIE,
+    'server'=> $_SERVER,
+    'files' =>$_FILES
+]);
 $container->singleton(\app\core\Request\RequestInterface::class, function () use ($request) {
     return $request;
 });
 
 
-$response = $container->make(\app\core\Response::class);
-$container->singleton(\app\core\Response::class, function () use ($response) {
+$response = $container->make(\app\core\Response\Response::class, [
+    'files'=>null,
+    'content'=>null,
+    'headers'=>[],
+    'statusCode'=>200,
+    ]);
+$container->singleton(\app\core\Response\Response::class, function () use ($response) {
     return $response;
 });
 
 
-$router = $container->make(\app\core\Router::class);
-$container->singleton(\app\core\Router::class, function () use ($router) {
+$container->bind(\app\core\Response\ResponseInterface::class, \app\core\Response\Response::class);
+
+
+$router = $container->make(\app\core\Router\Router::class);
+$container->singleton(\app\core\Router\Router::class, function () use ($router) {
     return $router;
 });
+
+
+$container->bind(\app\core\Router\RouterInterface::class, \app\core\Router\Router::class);
+
+
+$container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 
 
 $app = $container->make(\app\core\Application::class);

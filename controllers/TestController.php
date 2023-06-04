@@ -2,9 +2,7 @@
 
 namespace app\controllers;
 
-use app\core\Application;
-
-class TestController extends \app\core\Controller
+class TestController extends \app\core\Controller\Controller
 {
     public function test(){
 

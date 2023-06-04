@@ -1,11 +1,11 @@
 <?php
 
-namespace app\core;
+namespace app\core\Response;
 
 /**
  * The Response class handles HTTP responses.
  */
-class Response
+class Response implements ResponseInterface
 {
     /**
      * @param array $headers An array to store response headers.
@@ -15,10 +15,10 @@ class Response
      */
 
     public function __construct(
-        protected array $headers = [],
-        protected int   $statusCode = 200,
-        protected mixed $content=null,
-        protected mixed $files=null,
+        protected array $headers,
+        protected int   $statusCode,
+        protected mixed $content,
+        protected mixed $files,
     ) {
     }
 
@@ -82,9 +82,10 @@ class Response
         return $this ;
     }
 
-    public function redirect(string $to)
+    public function redirect(string $distURL):static
     {
-        // todo implement this function
+        $this->setHeader('Location', $distURL);
+        return $this;
     }
 
     /**
@@ -92,7 +93,7 @@ class Response
      *
      * @return void
      */
-    public function send()
+    public function send(): void
     {
         http_response_code($this->statusCode);
 
@@ -104,7 +105,6 @@ class Response
             } else {
                 header($headerName . ': ' . $headerValue);
             }
-
         }
 
         echo $this->content;

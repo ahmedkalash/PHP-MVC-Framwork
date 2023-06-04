@@ -1,16 +1,17 @@
 <?php
 
-namespace app\core;
+namespace app\core\Controller;
 
 use app\core\Request\RequestInterface;
+use app\core\Response\ResponseInterface;
 use Illuminate\Container\Container;
 use Twig\Environment;
 
-abstract class Controller
+abstract class Controller implements ControllerInterface
 {
     public function __construct(
         protected RequestInterface     $request,
-        protected Response    $response,
+        protected ResponseInterface    $response,
         protected Container   $container,
         protected Environment $twig,
     ) {

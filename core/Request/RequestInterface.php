@@ -36,12 +36,20 @@ interface RequestInterface
     public function postData(string $key = null): null|int|string|float|bool|array;
 
     /**
-     * Retrieves a specific value from the POST data. If it is not found it will search in the GET data. Or returns all the POST and GET data in one array if the $key is NULL.
-     * *Note that data in POST will override the data in Get that has the same key.
-     * @param string|null $key The data key to retrieve.
-     * @return null|int|string|float|bool|array All The POST data or the value of the specified key.
+     * Retrieves all the data sent to the server in both get and post method.
+     * * Note that data in POST will override the data in Get that has the same key.
+    * @return null|int|string|float|bool|array
      */
-    public function allData(string $key = null): null|int|string|float|bool|array;
+    public function allData(): null|int|string|float|bool|array;
+
+
+    /**
+     * Retrieves a specific value from the POST data. If it is not found it will search in the GET data.
+     * * Note that data in POST will override the data in Get that has the same key.
+     * @param string $key The data key to retrieve.
+     * @return null|int|string|float|bool|array The value of the specified key or NULL if it is not found.
+     */
+    public function input(string $key): null|int|string|float|bool|array;
 
 
     /**
