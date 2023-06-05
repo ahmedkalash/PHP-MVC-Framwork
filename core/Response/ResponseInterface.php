@@ -55,5 +55,7 @@ interface ResponseInterface
      */
     public function send(): void;
 
+    public function redirectBack();
+
 
 }

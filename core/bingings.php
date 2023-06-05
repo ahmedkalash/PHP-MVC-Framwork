@@ -19,24 +19,16 @@ $container->singleton(Environment::class, function () {
 $container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 
 
-$request = $container->make(\app\core\Request\Request::class, [
-    'getData'=>$_GET,
-    'postData'=>$_POST,
-    'cookies' =>$_COOKIE,
-    'server'=> $_SERVER,
-    'files' =>$_FILES
-]);
-$container->singleton(\app\core\Request\RequestInterface::class, function () use ($request) {
+$request = $container->make(\app\core\Request\Request::class);
+$container->singleton(\app\core\Request\Request::class, function () use ($request) {
     return $request;
 });
 
 
-$response = $container->make(\app\core\Response\Response::class, [
-    'files'=>null,
-    'content'=>null,
-    'headers'=>[],
-    'statusCode'=>200,
-    ]);
+$container->bind(\app\core\Request\RequestInterface::class, \app\core\Request\Request::class);
+
+
+$response = $container->make(\app\core\Response\Response::class);
 $container->singleton(\app\core\Response\Response::class, function () use ($response) {
     return $response;
 });

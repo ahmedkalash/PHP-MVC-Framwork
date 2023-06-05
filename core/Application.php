@@ -11,7 +11,6 @@ use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use function PHPUnit\Framework\isNull;
 
 class Application
 {
@@ -44,6 +43,7 @@ class Application
         $this->boot();
         $result = $this->router->resolve();
         $this->handelResponse($result);
+        $this->shutDown();
     }
 
 
@@ -59,7 +59,21 @@ class Application
     }
     public function boot()
     {
+        $this->twig->addGlobal('session', $_SESSION);
 
+        if(!isset($_SESSION['previous_url'])) {
+            $_SESSION['previous_url'] = $_SERVER['HTTP_HOST'] .= $_SERVER['REQUEST_URI'];
+        }
+        if(!isset($_SESSION['previous_path'])) {
+            $_SESSION['previous_path'] = $_SERVER['REQUEST_URI'];
+        }
+
+    }
+
+    public function shutDown()
+    {
+        $_SESSION['previous_url'] = $_SERVER['HTTP_HOST'] .= $_SERVER['REQUEST_URI'];
+        $_SESSION['previous_path'] = $_SERVER['REQUEST_URI'];
     }
 
 

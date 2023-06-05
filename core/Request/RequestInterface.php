@@ -97,4 +97,7 @@ interface RequestInterface
      */
     public function isGet(): bool;
 
+    public function validate(): bool|array;
+
+
 }

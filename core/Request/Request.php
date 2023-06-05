@@ -24,17 +24,17 @@ class Request implements RequestInterface
      * @throws \Exception
      */
     public function __construct(
-        array                             $getData,
-        array                             $postData,
-        array                             $cookies,
-        array                             $server,
-        array                             $files,
-        protected InputSanitizerInterface $inputSanitizer
+        protected InputSanitizerInterface $inputSanitizer,
+        array                             $getData=null,
+        array                             $postData=null,
+        array                             $cookies=null,
+        array                             $server=null,
+        array                             $files=null
     ) {
-        $this->setServer($server);
-        $this->setGetData($getData);
-        $this->setPostData($postData);
-        $this->setCookies($cookies);
+        $this->setServer($server??$_SERVER);
+        $this->setGetData($getData??$_GET);
+        $this->setPostData($postData??$_POST);
+        $this->setCookies($cookies??$_COOKIE);
         $this->setHeaders();
         $this->setPath();
         $this->setMethod();
@@ -265,5 +265,11 @@ class Request implements RequestInterface
     private function setServer(array $server)
     {
         $this->server = $server;
+    }
+
+
+    public function validate(): bool|array
+    {
+        return true;
     }
 }
