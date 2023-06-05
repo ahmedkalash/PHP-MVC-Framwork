@@ -6,9 +6,17 @@ class TestController extends \app\core\Controller\Controller
 {
     public function test()
     {
-       dd( $_SESSION['previous_url'] = $_SERVER['HTTP_HOST'].= $_SERVER['REQUEST_URI']);
-        return  $this->request->path();
+         //$this->sessionHandler->flush();
+       //$this->sessionHandler->delete('Flash_1');
+        $this->sessionHandler->flash('Flash_1', 'Flash_2');
+        $all = $this->sessionHandler->all();
+        dump($all);
 
+        dump($this->sessionHandler->newFlashDataKeys());
+        dump($this->sessionHandler->oldFlashDataKeys());
+
+
+        return  $this->request->path();
     }
 
 }

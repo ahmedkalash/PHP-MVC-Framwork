@@ -19,6 +19,7 @@ class AuthController extends Controller
     }
     public function showRegisterPage(Request $request): string
     {
+
         //dump($request);
         //unset( $_SESSION['errors']);
         return $this->twig->render('register.twig', ['errors'=>['name'=>'an_error']]);

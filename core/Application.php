@@ -5,6 +5,8 @@ namespace app\core;
 use app\core\Request\RequestInterface;
 use app\core\Response\ResponseInterface;
 use app\core\Router\RouterInterface;
+use app\core\Session\SessionHandler;
+use app\core\Session\SessionHandlerInterface;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Twig\Environment;
@@ -27,7 +29,8 @@ class Application
         public ResponseInterface    $response,
         public Container   $container,
         public Environment $twig,
-        public RouterInterface      $router
+        public RouterInterface      $router,
+        public SessionHandlerInterface $sessionHandler
     ) {
         self::$app = $this;
     }
@@ -59,21 +62,24 @@ class Application
     }
     public function boot()
     {
-        $this->twig->addGlobal('session', $_SESSION);
+        $this->sessionHandler->start();
+        $this->twig->addGlobal('session', $this->sessionHandler->all());
 
-        if(!isset($_SESSION['previous_url'])) {
-            $_SESSION['previous_url'] = $_SERVER['HTTP_HOST'] .= $_SERVER['REQUEST_URI'];
+        if(!$this->sessionHandler->has('previous_url')) {
+            $this->sessionHandler->put('previous_url', $this->request->headers('HOST') . $this->request->server('REQUEST_URI'));
         }
-        if(!isset($_SESSION['previous_path'])) {
-            $_SESSION['previous_path'] = $_SERVER['REQUEST_URI'];
+        if(!$this->sessionHandler->has('previous_path')) {
+            $this->sessionHandler->put('previous_path', $this->request->server('REQUEST_URI'));
         }
+
 
     }
 
     public function shutDown()
     {
-        $_SESSION['previous_url'] = $_SERVER['HTTP_HOST'] .= $_SERVER['REQUEST_URI'];
-        $_SESSION['previous_path'] = $_SERVER['REQUEST_URI'];
+        $this->sessionHandler->put('previous_url', $this->request->headers('HOST') . $this->request->server('REQUEST_URI'));
+        $this->sessionHandler->put('previous_path', $this->request->server('REQUEST_URI'));
+        $this->sessionHandler->prepareTheNewFlashDataForTheNextRequest();
     }
 
 

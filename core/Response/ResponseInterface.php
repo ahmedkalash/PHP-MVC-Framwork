@@ -28,6 +28,7 @@ interface ResponseInterface
      * @return static
      */
     public function setHeader(string $name, string $value, bool $replace = true): static;
+    public function setCookie(string $name, $value = "", $expires = 0, $path = "", $domain = "", $secure = true, $httponly = true): static;
 
     /**
      * Set the HTML response content.

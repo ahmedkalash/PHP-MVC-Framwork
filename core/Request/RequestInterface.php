@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace app\core\Request;
 
 /**
@@ -38,7 +39,7 @@ interface RequestInterface
     /**
      * Retrieves all the data sent to the server in both get and post method.
      * * Note that data in POST will override the data in Get that has the same key.
-    * @return null|int|string|float|bool|array
+     * @return null|int|string|float|bool|array
      */
     public function allData(): null|int|string|float|bool|array;
 
@@ -67,6 +68,8 @@ interface RequestInterface
      * @return null|int|string|float|bool|array All The headers data or the value of the specified key.
      */
     public function headers(string $key = null): null|int|string|float|bool|array;
+
+    public function server(string $key = null): null|int|string|float|bool|array;
 
     /**
      * Gets the requested path.

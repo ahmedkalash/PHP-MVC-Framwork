@@ -18,6 +18,12 @@ $container->singleton(Environment::class, function () {
 
 $container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 
+$container->bind(\app\core\Session\SessionHandlerInterface::class, app\core\Session\SessionHandler::class);
+
+$sessionHandler = $container->make(\app\core\Session\SessionHandler::class);
+$container->singleton(\app\core\Session\SessionHandler::class, function () use ($sessionHandler) {
+    return $sessionHandler;
+});
 
 $request = $container->make(\app\core\Request\Request::class);
 $container->singleton(\app\core\Request\Request::class, function () use ($request) {

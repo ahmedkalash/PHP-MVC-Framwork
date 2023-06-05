@@ -205,6 +205,16 @@ class Request implements RequestInterface
         }
         return $this->headers;
     }
+    public function server(string $key = null): null|int|string|float|bool|array
+    {
+        if ($key) {
+            if (array_key_exists($key, $this->server)) {
+                return $this->server[$key];
+            }
+            return null;
+        }
+        return $this->server;
+    }
 
     public function path(): string
     {
