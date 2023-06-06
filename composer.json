@@ -4,7 +4,7 @@
         "psr-4": {
             "app\\core\\": "core/",
             "app\\controllers\\": "controllers/",
-            "app\\Requests\\": "Requests/"
+            "app\\requests\\": "requests/"
         },
         "files": ["./core/Helpers/Dumping.php"]
     },
@@ -18,7 +18,8 @@
     "require": {
 
         "twig/twig": "^3.0",
-        "illuminate/container": "^10.13"
+        "illuminate/container": "^10.13",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.17",

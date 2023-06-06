@@ -5,7 +5,7 @@ namespace app\controllers;
 use app\core\Controller\Controller;
 use app\core\Request\Request;
 use app\core\Request\RequestInterface;
-use app\Requests\RegisterRequest;
+use app\requests\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -28,9 +28,8 @@ class AuthController extends Controller
     public function register(RegisterRequest $request)
     {
 
-        dump($request->validate());
+        dump($request);
 
-        dd($request);
 
         return "Handling submitted data in AuthController::register()";
     }
