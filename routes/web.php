@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 use app\controllers\AuthController;
 use app\controllers\ContactController;
 use app\controllers\HomeController;

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core\Response;
 
 /**
@@ -28,6 +28,7 @@ interface ResponseInterface
      * @return static
      */
     public function setHeader(string $name, string $value, bool $replace = true): static;
+    public function setCookie(string $name, $value = "", $expires = 0, $path = "", $domain = "", $secure = true, $httponly = true): static;
 
     /**
      * Set the HTML response content.
@@ -54,6 +55,8 @@ interface ResponseInterface
      * @return void
      */
     public function send(): void;
+
+    public function redirectBack();
 
 
 }

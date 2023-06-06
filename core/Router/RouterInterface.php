@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core\Router;
 
 use app\core\Request\RequestInterface;
@@ -26,7 +26,7 @@ interface RouterInterface
      * @throws LoaderError|\Illuminate\Contracts\Container\BindingResolutionException
      * @throws \Exception
      */
-    public function resolve():ResponseInterface|string|array;
+    public function resolve():ResponseInterface|string|array|null;
 
 
 }

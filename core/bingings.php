@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 use Twig\Environment;
 
 $container = new Illuminate\Container\Container();
@@ -12,30 +12,29 @@ $container->singleton(Environment::class, function () {
     $loader = new \Twig\Loader\FilesystemLoader(\app\core\Application::VIEWS_DIR);
     return new \Twig\Environment($loader, [
         'cache' => \app\core\Application::STORAGE_DIR . '/cache',
+        'auto_reload'=>true
     ]);
 });
 
 $container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 
+$container->bind(\app\core\Session\SessionHandlerInterface::class, app\core\Session\SessionHandler::class);
 
-$request = $container->make(\app\core\Request\Request::class, [
-    'getData'=>$_GET,
-    'postData'=>$_POST,
-    'cookies' =>$_COOKIE,
-    'server'=> $_SERVER,
-    'files' =>$_FILES
-]);
-$container->singleton(\app\core\Request\RequestInterface::class, function () use ($request) {
+$sessionHandler = $container->make(\app\core\Session\SessionHandler::class);
+$container->singleton(\app\core\Session\SessionHandler::class, function () use ($sessionHandler) {
+    return $sessionHandler;
+});
+
+$request = $container->make(\app\core\Request\Request::class);
+$container->singleton(\app\core\Request\Request::class, function () use ($request) {
     return $request;
 });
 
 
-$response = $container->make(\app\core\Response\Response::class, [
-    'files'=>null,
-    'content'=>null,
-    'headers'=>[],
-    'statusCode'=>200,
-    ]);
+$container->bind(\app\core\Request\RequestInterface::class, \app\core\Request\Request::class);
+
+
+$response = $container->make(\app\core\Response\Response::class);
 $container->singleton(\app\core\Response\Response::class, function () use ($response) {
     return $response;
 });

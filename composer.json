@@ -3,9 +3,12 @@
     "autoload": {
         "psr-4": {
             "app\\core\\": "core/",
-            "app\\controllers\\": "controllers/"
-        }
+            "app\\controllers\\": "controllers/",
+            "app\\Requests\\": "Requests/"
+        },
+        "files": ["./core/Helpers/Dumping.php"]
     },
+
     "authors": [
         {
             "name": "Ahmed Kalash",

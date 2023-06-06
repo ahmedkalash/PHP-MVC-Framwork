@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace app\core\Request;
 
 use app\core\InputSanitizer\InputSanitizerInterface;
@@ -24,17 +24,17 @@ class Request implements RequestInterface
      * @throws \Exception
      */
     public function __construct(
-        array                             $getData,
-        array                             $postData,
-        array                             $cookies,
-        array                             $server,
-        array                             $files,
-        protected InputSanitizerInterface $inputSanitizer
+        protected InputSanitizerInterface $inputSanitizer,
+        array                             $getData=null,
+        array                             $postData=null,
+        array                             $cookies=null,
+        array                             $server=null,
+        array                             $files=null
     ) {
-        $this->setServer($server);
-        $this->setGetData($getData);
-        $this->setPostData($postData);
-        $this->setCookies($cookies);
+        $this->setServer($server??$_SERVER);
+        $this->setGetData($getData??$_GET);
+        $this->setPostData($postData??$_POST);
+        $this->setCookies($cookies??$_COOKIE);
         $this->setHeaders();
         $this->setPath();
         $this->setMethod();
@@ -205,6 +205,16 @@ class Request implements RequestInterface
         }
         return $this->headers;
     }
+    public function server(string $key = null): null|int|string|float|bool|array
+    {
+        if ($key) {
+            if (array_key_exists($key, $this->server)) {
+                return $this->server[$key];
+            }
+            return null;
+        }
+        return $this->server;
+    }
 
     public function path(): string
     {
@@ -265,5 +275,11 @@ class Request implements RequestInterface
     private function setServer(array $server)
     {
         $this->server = $server;
+    }
+
+
+    public function validate(): bool|array
+    {
+        return true;
     }
 }
