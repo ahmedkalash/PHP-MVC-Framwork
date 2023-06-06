@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         //dump($request);
         //unset( $_SESSION['errors']);
-        return $this->twig->render('register.twig', ['errors'=>['name'=>'an_error']]);
+        return $this->twig->render('register.twig');
 
     }
     public function register(RegisterRequest $request)

@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace app\core\Router;
 
 use app\core\Controller\Controller;
@@ -7,6 +8,8 @@ use app\core\Exceptions\InvalidActionException;
 use app\core\Exceptions\MethodNotfoundException;
 use app\core\Request\RequestInterface;
 use app\core\Response\ResponseInterface;
+use app\core\Session\SessionHandler;
+use app\core\Session\SessionHandlerInterface;
 use app\core\view\ViewPath;
 use Illuminate\Container\Container;
 use Twig\Environment;
@@ -27,10 +30,11 @@ class Router implements RouterInterface
      * @param Environment $twig
      */
     public function __construct(
-        protected RequestInterface  $request,
-        protected ResponseInterface $response,
-        protected Container         $container,
-        protected Environment       $twig,
+        protected RequestInterface        $request,
+        protected ResponseInterface       $response,
+        protected Container               $container,
+        protected Environment             $twig,
+        protected SessionHandlerInterface $sessionHandler
     ) {
     }
 
@@ -98,7 +102,7 @@ class Router implements RouterInterface
             } elseif (is_string($action)) {
                 return $this->twig->render($action);
             } elseif (class_exists($action[0])) {
-                if(method_exists($action[0], $action[1])) {
+                if (method_exists($action[0], $action[1])) {
                     return $this->callControllerMethod($action[0], $action[1]);
                 }
                 throw new MethodNotfoundException("Method  $action[1] not found on class $action[0]");
@@ -122,26 +126,28 @@ class Router implements RouterInterface
      * @throws \ReflectionException
      */
 
-    protected function callControllerMethod(Controller|string $controller, string $method, array $params=[]): array|string|ResponseInterface|null
+    protected function callControllerMethod(Controller|string $controller, string $method, array $params = []): array|string|ResponseInterface|null
     {
-        if(is_string($controller)) {
+        if (is_string($controller)) {
             $controller = $this->container->make($controller);
         }
 
         $request = $this->getRequestObjectFormMethodParameter($controller, $method);
 
-        if(isset($request)) {
+        if (isset($request)) {
             $validationResult = $request->validate();
-            if($validationResult === true) {
+            if ($validationResult === true) {
 
                 return $this->container->call(
                     [$controller, $method],
-                    array_merge($params, ['request'=>$request])
+                    array_merge($params, ['request' => $request])
                 );
 
             } else {
-                $_SESSION['errors'] = $validationResult;
-                //return $validationResult;
+
+                // $_SESSION['errors'] = $validationResult;
+                $this->sessionHandler->flash('errors', $validationResult);
+
                 return $this->response->redirectBack();
             }
         }
@@ -149,9 +155,9 @@ class Router implements RouterInterface
         return $this->container->call([$controller, $method], $params);
     }
 
-    public function getRequestObjectFormMethodParameter(Controller|string $controller, string $method):?RequestInterface
+    public function getRequestObjectFormMethodParameter(Controller|string $controller, string $method): ?RequestInterface
     {
-        if(is_string($controller)) {
+        if (is_string($controller)) {
             $controller = $this->container->make($controller);
         }
         $request = null;
@@ -159,8 +165,8 @@ class Router implements RouterInterface
         $reflectionParameters = $reflectionMethod->getParameters();
         foreach ($reflectionParameters as $reflectionParameter) {
             $parameterName = $reflectionParameter->getType()->getName();
-            if(is_subclass_of($parameterName, RequestInterface::class)) {
-                $request=$this->container->make($parameterName);
+            if (is_subclass_of($parameterName, RequestInterface::class)) {
+                $request = $this->container->make($parameterName);
                 break;
             }
         }

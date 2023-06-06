@@ -63,7 +63,9 @@ class Application
     public function boot()
     {
         $this->sessionHandler->start();
-        $this->twig->addGlobal('session', $this->sessionHandler->all());
+
+        $this->loadTwigGlobalData();
+
 
         if(!$this->sessionHandler->has('previous_url')) {
             $this->sessionHandler->put('previous_url', $this->request->headers('HOST') . $this->request->server('REQUEST_URI'));
@@ -80,6 +82,12 @@ class Application
         $this->sessionHandler->put('previous_url', $this->request->headers('HOST') . $this->request->server('REQUEST_URI'));
         $this->sessionHandler->put('previous_path', $this->request->server('REQUEST_URI'));
         $this->sessionHandler->prepareTheNewFlashDataForTheNextRequest();
+    }
+
+    public function loadTwigGlobalData()
+    {
+        $this->twig->addGlobal('session', $this->sessionHandler->all());
+        $this->twig->addGlobal('errors', $this->sessionHandler->get('errors')??[]);
     }
 
 

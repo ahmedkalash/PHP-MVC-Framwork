@@ -27,7 +27,7 @@ interface SessionHandlerInterface
 
     public function id(): false|string;
 
-    public function regenerateId(): string;
+    public function regenerateId():bool| string;
 
     public function reFresh(): string;
 

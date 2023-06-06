@@ -8,7 +8,7 @@ class TestController extends \app\core\Controller\Controller
     {
          //$this->sessionHandler->flush();
        //$this->sessionHandler->delete('Flash_1');
-        $this->sessionHandler->flash('Flash_1', 'Flash_2');
+        //$this->sessionHandler->flash('Flash_1', 'Flash_2');
         $all = $this->sessionHandler->all();
         dump($all);
 

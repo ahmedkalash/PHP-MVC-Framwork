@@ -156,9 +156,9 @@ class SessionHandler implements SessionHandlerInterface
         $this->setOldFlashDataKeys([]);
     }
 
-    public function regenerateId(): string
+    public function regenerateId(): bool|string
     {
-        return session_regenerate_id();
+        return session_regenerate_id() ? session_id():false;
     }
 
 }

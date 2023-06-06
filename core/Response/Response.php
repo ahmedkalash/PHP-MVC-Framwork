@@ -2,6 +2,9 @@
 
 namespace app\core\Response;
 
+use app\core\Session\SessionHandler;
+use app\core\Session\SessionHandlerInterface;
+
 /**
  * The Response class handles HTTP responses.
  */
@@ -16,6 +19,7 @@ class Response implements ResponseInterface
      */
 
     public function __construct(
+        protected SessionHandlerInterface $sessionHandler,
         protected array $headers = [],
         protected int   $statusCode = 200,
         protected mixed $content = null,
@@ -93,7 +97,8 @@ class Response implements ResponseInterface
 
     public function redirectBack(): static
     {
-        $this->redirect($_SESSION['previous_path']);
+        //$this->redirect($_SESSION['previous_path']);
+        $this->redirect($this->sessionHandler->get('previous_path'));
         return $this;
     }
 

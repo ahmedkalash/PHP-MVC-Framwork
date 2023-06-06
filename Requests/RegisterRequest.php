@@ -21,7 +21,7 @@ class RegisterRequest extends Request
             // call another validation function and update the array of errors.
         }
 
-        return count($errors)? $errors:true;
+        return count($errors) ? $errors : true;
     }
 
     public function validateFirstName(): bool|array
@@ -32,27 +32,27 @@ class RegisterRequest extends Request
         $errorMessage = null;
 
         if (is_null($first_name)) {
-            $errorMessage = "$field_name Is required";
+            $errorMessage = "First name Is required";
         } elseif (strlen($first_name) <= 3) {
-            $errorMessage = "$field_name Must be more that three characters";
+            $errorMessage = "First name Must be more that three characters.";
         }
 
         return $errorMessage ? [$field_name => $errorMessage] : true;
     }
 
-     public function validateLastName(): bool|array
-     {
+    public function validateLastName(): bool|array
+    {
 
-         $field_name = 'last_name';
-         $first_name = $this->input($field_name);
-         $errorMessage = null;
+        $field_name = 'last_name';
+        $first_name = $this->input($field_name);
+        $errorMessage = null;
 
-         if (is_null($first_name)) {
-             $errorMessage = "$field_name Is required";
-         } elseif (strlen($first_name) <= 3) {
-             $errorMessage = "$field_name Must be more that three characters";
-         }
+        if (is_null($first_name)) {
+            $errorMessage = "Last name Is required";
+        } elseif (strlen($first_name) <= 3) {
+            $errorMessage = "Last name Must be more that three characters.";
+        }
 
-         return $errorMessage ? [$field_name => $errorMessage] : true;
-     }
+        return $errorMessage ? [$field_name => $errorMessage] : true;
+    }
 }
