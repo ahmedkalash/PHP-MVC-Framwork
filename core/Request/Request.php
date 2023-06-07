@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace app\core\Request;
 
 use app\core\InputSanitizer\InputSanitizerInterface;
@@ -7,6 +8,7 @@ use app\core\InputSanitizer\InputSanitizerInterface;
 class Request implements RequestInterface
 {
 
+    // TODO make this class abstract
     protected array $getData;
     protected array $postData;
     protected array $cookies;
@@ -25,16 +27,16 @@ class Request implements RequestInterface
      */
     public function __construct(
         protected InputSanitizerInterface $inputSanitizer,
-        array                             $getData=null,
-        array                             $postData=null,
-        array                             $cookies=null,
-        array                             $server=null,
-        array                             $files=null
+        array                             $getData = null,
+        array                             $postData = null,
+        array                             $cookies = null,
+        array                             $server = null,
+        array                             $files = null
     ) {
-        $this->setServer($server??$_SERVER);
-        $this->setGetData($getData??$_GET);
-        $this->setPostData($postData??$_POST);
-        $this->setCookies($cookies??$_COOKIE);
+        $this->setServer($server ?? $_SERVER);
+        $this->setGetData($getData ?? $_GET);
+        $this->setPostData($postData ?? $_POST);
+        $this->setCookies($cookies ?? $_COOKIE);
         $this->setHeaders();
         $this->setPath();
         $this->setMethod();
@@ -205,6 +207,7 @@ class Request implements RequestInterface
         }
         return $this->headers;
     }
+
     public function server(string $key = null): null|int|string|float|bool|array
     {
         if ($key) {
@@ -272,7 +275,7 @@ class Request implements RequestInterface
         return $this->postData($key) ?? $this->getData($key);
     }
 
-    private function setServer(array $server)
+    private function setServer(array $server): void
     {
         $this->server = $server;
     }

@@ -4,7 +4,8 @@
         "psr-4": {
             "app\\core\\": "core/",
             "app\\controllers\\": "controllers/",
-            "app\\requests\\": "requests/"
+            "app\\requests\\": "requests/",
+            "app\\models\\": "models/"
         },
         "files": ["./core/Helpers/Dumping.php"]
     },

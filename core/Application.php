@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 namespace app\core;
 
 use app\core\Request\RequestInterface;
@@ -25,11 +26,11 @@ class Application
 
 
     public function __construct(
-        public RequestInterface     $request,
-        public ResponseInterface    $response,
-        public Container   $container,
-        public Environment $twig,
-        public RouterInterface      $router,
+        public RequestInterface        $request,
+        public ResponseInterface       $response,
+        public Container               $container,
+        public Environment             $twig,
+        public RouterInterface         $router,
         public SessionHandlerInterface $sessionHandler
     ) {
         self::$app = $this;
@@ -60,6 +61,7 @@ class Application
             $this->response->setJsonContent($response)->send();
         }
     }
+
     public function boot()
     {
         $this->sessionHandler->start();
@@ -67,10 +69,10 @@ class Application
         $this->loadTwigGlobalData();
 
 
-        if(!$this->sessionHandler->has('previous_url')) {
+        if (!$this->sessionHandler->has('previous_url')) {
             $this->sessionHandler->put('previous_url', $this->request->headers('HOST') . $this->request->server('REQUEST_URI'));
         }
-        if(!$this->sessionHandler->has('previous_path')) {
+        if (!$this->sessionHandler->has('previous_path')) {
             $this->sessionHandler->put('previous_path', $this->request->server('REQUEST_URI'));
         }
 
@@ -87,7 +89,7 @@ class Application
     public function loadTwigGlobalData()
     {
         $this->twig->addGlobal('session', $this->sessionHandler->all());
-        $this->twig->addGlobal('errors', $this->sessionHandler->get('errors')??[]);
+        $this->twig->addGlobal('errors', $this->sessionHandler->get('errors') ?? []);
     }
 
 

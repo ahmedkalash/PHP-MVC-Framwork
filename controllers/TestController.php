@@ -1,22 +1,26 @@
 <?php
 declare(strict_types=1);
+
 namespace app\controllers;
+
+use app\models\User;
 
 class TestController extends \app\core\Controller\Controller
 {
+    protected string $test = 'hi i am test';
+
     public function test()
     {
-         //$this->sessionHandler->flush();
-       //$this->sessionHandler->delete('Flash_1');
-        //$this->sessionHandler->flash('Flash_1', 'Flash_2');
-        $all = $this->sessionHandler->all();
-        dd($all);
+
+        $user = $this->container->make(User::class);
+
+        dd($user);
 
         dump($this->sessionHandler->newFlashDataKeys());
         dump($this->sessionHandler->oldFlashDataKeys());
 
 
-        return  $this->request->path();
+        return $this->request->path();
     }
 
 }
