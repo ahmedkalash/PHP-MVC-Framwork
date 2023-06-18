@@ -132,7 +132,7 @@ abstract class Model implements ModelInterface
 
     public function primaryKeyName(): string
     {
-        return $this->primary_keyName;
+        return $this->primary_key_name;
     }
 
 

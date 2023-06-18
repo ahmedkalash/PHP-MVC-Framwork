@@ -148,7 +148,7 @@ class Router implements RouterInterface
                 // $_SESSION['errors'] = $validationResult;
                 $this->sessionHandler->flash('errors', $validationResult);
 
-                return $this->response->redirectBack();
+                return $this->response->setStatusCode(422)->redirectBack();
             }
         }
 
