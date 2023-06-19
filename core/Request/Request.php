@@ -127,7 +127,7 @@ class Request implements RequestInterface
     }
 
     /**
-     * Sets the request method from a given string.
+     * Sets the request method from server.
      *
      * @return void
      * @throws \Exception
@@ -225,22 +225,15 @@ class Request implements RequestInterface
     }
 
     /**
-     * @throws \Exception
+     * Checks if the request method is POST.
+     *
+     * @return bool True if the request method is POST, false otherwise.
      */
     public function isPost(): bool
     {
         return $this->method() == 'post';
     }
 
-    /**
-     * Checks if the request method is POST.
-     *
-     * @return string True if the request method is POST, false otherwise.
-     */
-    public function method(): string
-    {
-        return $this->method;
-    }
 
     /**
      * Checks if the request method is GET.
@@ -250,6 +243,12 @@ class Request implements RequestInterface
     public function isGet(): bool
     {
         return $this->method() == 'get';
+    }
+
+
+    public function method(): string
+    {
+        return $this->method;
     }
 
 

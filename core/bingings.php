@@ -7,6 +7,7 @@ $container = new Illuminate\Container\Container();
 $container->singleton(\Illuminate\Container\Container::class, function () use ($container) {
     return $container;
 });
+Illuminate\Container\Container::setInstance($container);
 
 
 $container->singleton(Environment::class, function () {
@@ -24,6 +25,8 @@ $container->bind(PDO::class, function () {
         $_ENV["DB_PASSWORD"]
     );
 });
+
+$container->bind(\app\core\QueryBuilder\QueryBuilderInterface::class, \app\core\QueryBuilder\QueryBuilder::class);
 
 $container->bind(\app\core\InputSanitizer\InputSanitizerInterface::class, \app\core\InputSanitizer\InputSanitizer::class);
 

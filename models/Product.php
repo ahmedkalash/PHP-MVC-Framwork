@@ -1,20 +1,69 @@
 <?php
-
+declare(strict_types=1);
 namespace app\models;
 
 use app\core\Model\Model;
+use Illuminate\Container\Container;
+use PDO;
 
-abstract class Product extends Model
+class Product extends Model
 {
     protected int $id;
     protected string $name;
     protected float $price;
+    protected int $sku;
 
-    protected string $table_name = "products";
+    protected static string $table_name = "products";
 
 
-    public function columns(): array
+    public static function columns(): array
     {
-        return ["id", 'name', 'price'];
+        return ['id', 'name', 'price','sku'];
     }
+
+    /**
+     * @param string|null $orderBy
+     * @return Product[]
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    public static function all(string $orderBy=null): array
+    {
+        $orderBy = $orderBy? 'ORDER BY '.$orderBy  : '';
+        $table = static::tableName();
+        $selectQuery =  Container::getInstance()->make(\PDO::class)
+            ->prepare("SELECT product.id , product.name , product.price, product.sku, attribute , value
+                    FROM $table as product
+                    join product_attributes_values pav on product.id = pav.product_id
+                    $orderBy");
+        $selectQuery->execute();
+        $records = $selectQuery->fetchAll(PDO::FETCH_ASSOC);
+
+        return \app\core\Facade\Product::assemble($records);
+    }
+
+    /**
+     * @param array $records
+     * @return Product[]
+     */
+    public function assemble(array $records):array
+    {
+        $assembled = [];
+        foreach ($records as& $record) {
+            if(isset($assembled[$record['id']])) {
+                $assembled[$record['id']]->attributes[$record['attribute']]=$record['value'];
+            } else {
+                $attributes=[];
+                $attributes[$record['attribute']]=$record['value'];
+                $product = Product::fromArray($record);
+                $product->attributes =$attributes;
+                $assembled[$product->id]=$product;
+            }
+
+            unset($record);
+        }
+        return array_values($assembled);
+    }
+
+
+
 }
