@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace app\core\Controller;
 
+use app\core\QueryBuilder\QueryBuilderInterface;
 use app\core\Request\RequestInterface;
 use app\core\Response\ResponseInterface;
 use app\core\Session\SessionHandler;
@@ -16,7 +17,8 @@ abstract class Controller implements ControllerInterface
         protected ResponseInterface    $response,
         protected Container   $container,
         protected Environment $twig,
-        protected SessionHandlerInterface $sessionHandler
+        protected SessionHandlerInterface $sessionHandler,
+        protected QueryBuilderInterface $queryBuilder
     ) {
 
     }

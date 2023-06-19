@@ -8,17 +8,11 @@ use Closure;
 interface ModelInterface
 {
 
-    /**
-     * Finds a record in the table by it primary key.
-     * @param int $primary_key
-     * @return static|null
-     */
-    public static function find(int $primary_key): ?static;
 
     /** Columns names
      * @return array<string> <p> An array that contains the column names as its values
      */
-    public function columns(): array;
+    public static function columns(): array;
 
     /**
      * Sets a value to an attribute.
@@ -31,18 +25,12 @@ interface ModelInterface
      */
     public function set(string $attribute, string|int|bool|float $value): static;
 
-    /**
-     * Sets the table name
-     * @param string $table_name
-     * @return $this
-     */
-    public function setTableName(string $table_name): static;
 
     /**
      * Gets the table name
      * @return string
      */
-    public function tableName(): string;
+    public static function tableName(): string;
 
     /**
      * Gets the value of an attribute.
@@ -51,11 +39,6 @@ interface ModelInterface
      */
     public function get(string $attribute): string|int|bool|float|null;
 
-    /**
-     * Gets all the Model data as an array.
-     * @return array<string, bool|float|int|null|string>
-     */
-    public function all(): array;
 
     /**
      * Deletes the value of an attribute (sets it to null).
@@ -85,20 +68,48 @@ interface ModelInterface
      * @param string $column
      * @return bool
      */
-    public function columnNameExists(string $column): bool;
+    public static function columnNameExists(string $column): bool;
 
     /**
      * Returns the name of the table primary key.
      * @return string
      */
-    public function primaryKeyName(): string;
+    public static function primaryKeyName(): string;
+
 
     /**
-     * Perform a transaction.
-     * @param Closure $closure
-     * @return mixed
+     * Makes a model from an array that has the column name as the key and the value as its value
+     * @param array<string, string|int|bool|float|null> $array
+     * @return static
      */
-    public function transaction(Closure $closure): mixed;
+    public static function fromArray(array $array):static;
+
+
+
+    /**
+     * Gets all records from the table
+     * @param string|null $orderBy
+     * @return static[]
+     */
+    public static function all(string $orderBy=null): array;
+
+
+    /**
+     * @param string $table
+     * @param string $column
+     * @param string $operator
+     * @param float|bool|int|string|null $value
+     * @param string|null $orderBy
+     * @return static[]
+     */
+    public static function selectWhere(string $column, string $operator, float|bool|int|string|null $value, string $orderBy=null): array;
+
+
+
+
+
+
+    public static function find(int $primaryKey);
 
 
 }

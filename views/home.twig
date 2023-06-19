@@ -1,6 +1,24 @@
 {% extends "layouts/main.twig" %}
 
 
+
 {% block title %} <title>Home</title>{% endblock %}
 
-{% block content %} <h1>Home</h1>{% endblock %}
+
+{% block content %}
+
+     <h1>Products</h1>
+     {% for item in products %}
+          <h4>name: {{ item.get('name') }}</h4>
+          <h4>id: {{ item.get('id') }}</h4>
+          <h4>sku: {{ item.get('sku') }}</h4>
+          <h4>price: {{ item.get('price') }}</h4>
+          {% for key, attribute in item.attributes %}
+               <h4>{{key}} : {{attribute}}</h4>
+          {% endfor %}
+          ------------------------
+     {% endfor %}
+
+
+
+{% endblock %}
