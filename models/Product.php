@@ -11,7 +11,7 @@ class Product extends Model
     protected int $id;
     protected string $name;
     protected float $price;
-    protected int $sku;
+    protected string $sku;
 
     protected static string $table_name = "products";
 
@@ -28,12 +28,12 @@ class Product extends Model
      */
     public static function all(string $orderBy=null): array
     {
-        $orderBy = $orderBy? 'ORDER BY '.$orderBy  : '';
+        $orderBy = 'ORDER BY '.($orderBy?? static::primaryKeyName());
         $table = static::tableName();
         $selectQuery =  Container::getInstance()->make(\PDO::class)
             ->prepare("SELECT product.id , product.name , product.price, product.sku, attribute , value
                     FROM $table as product
-                    join product_attributes_values pav on product.id = pav.product_id
+                    left join product_attributes_values pav on product.id = pav.product_id
                     $orderBy");
         $selectQuery->execute();
         $records = $selectQuery->fetchAll(PDO::FETCH_ASSOC);
