@@ -10,7 +10,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products=Product::all() ;
+        $products=Product::all('id');
+        //dd($products);
         return $this->twig->render(ViewPath::HOME, [
             'products'=>$products,
         ]);

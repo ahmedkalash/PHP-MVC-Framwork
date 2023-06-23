@@ -1,24 +1,39 @@
 {% extends "layouts/main.twig" %}
 
 
-
 {% block title %} <title>Home</title>{% endblock %}
 
 
 {% block content %}
+    <h2 class="title">Products List</h2>
 
-     <h1>Products</h1>
-     {% for item in products %}
-          <h4>name: {{ item.get('name') }}</h4>
-          <h4>id: {{ item.get('id') }}</h4>
-          <h4>sku: {{ item.get('sku') }}</h4>
-          <h4>price: {{ item.get('price') }}</h4>
-          {% for key, attribute in item.attributes %}
-               <h4>{{key}} : {{attribute}}</h4>
-          {% endfor %}
-          ------------------------
-     {% endfor %}
+     <section class="products" id="products">
 
+          <div class="action">
+               <button class="add-btn">ADD</button>
+               <button class="mass-delete-btn" id="delete-product-btn">MASS DELETE</button>
+          </div>
+          <div class="content">
+               {% for item in products %}
+                    <div class="card">
+                         <input class="delete-checkbox" type="checkbox">
+                         <div class="info">
+                              <h3>{{ item.get('sku') }}</h3>
+                              <h3>{{ item.get('name') }}</h3>
+                              <h3>{{ item.get('price') }} $</h3>
+                              {% set break = false %}
+                              {% for key, attribute in item.attributes %}
+                                   {% if loop.first and attribute !=null %}
+                                        <h3>{{key}}: {{attribute}}</h3>
+                                   {% endif %}
+                              {% endfor %}
+                         </div>
+                    </div>
+
+               {% endfor %}
+
+          </div>
+     </section>
 
 
 {% endblock %}
