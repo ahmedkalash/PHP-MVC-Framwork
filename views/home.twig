@@ -10,27 +10,30 @@
      <section class="products" id="products">
 
           <div class="action">
-               <button class="add-btn">ADD</button>
-               <button class="mass-delete-btn" id="delete-product-btn">MASS DELETE</button>
+               <button class="add-btn"><a class="add-btn-anchor" href="add-product">ADD</a></button>
+               <button class="mass-delete-btn" id="delete-product-btn" form="delete_form" type="submit">MASS DELETE</button>
           </div>
           <div class="content">
-               {% for item in products %}
-                    <div class="card">
-                         <input class="delete-checkbox" type="checkbox">
-                         <div class="info">
+              <form class="content" id="delete_form" action="/" method="post">
+                  {% for item in products %}
+                      <div class="card">
+                          <input class="delete-checkbox" type="checkbox" name="ids[]" value="{{ item.get('id') }}">
+                          <div class="info">
                               <h3>{{ item.get('sku') }}</h3>
                               <h3>{{ item.get('name') }}</h3>
                               <h3>{{ item.get('price') }} $</h3>
                               {% set break = false %}
                               {% for key, attribute in item.attributes %}
-                                   {% if loop.first and attribute !=null %}
-                                        <h3>{{key}}: {{attribute}}</h3>
-                                   {% endif %}
+                                  {% if loop.first and attribute !=null %}
+                                      <h3>{{key}}: {{attribute}}</h3>
+                                  {% endif %}
                               {% endfor %}
-                         </div>
-                    </div>
+                          </div>
+                      </div>
 
-               {% endfor %}
+                  {% endfor %}
+              </form>
+
 
           </div>
      </section>

@@ -3,7 +3,78 @@
 {% block title %} <title>Product Add</title>{% endblock %}
 
 {% block content %}
-    <h2 class="title">Product Add</h2>
+
+        <h2 class="title">Product Add</h2>
+        <section class="products" id="products">
+            <div class="action">
+                <button form="product_form" class="add-btn">Save</button>
+                <button class="mass-delete-btn" id="delete-product-btn"><a class="add-btn-anchor" href="/">Cancel</a></button>
+            </div>
+
+            {#------#}
+            {% for error in errors %}<br>
+                <h5>{{ error }} </h5>
+            {% endfor %}
+
+
+            <div class="content">
+
+                <form action="/add-product" method="post" id="product_form">
+                    <div class="input-group" id="base-input">
+                        <div class="input">
+                            <label for="sku" class="input-field-label">SKU </label><input type="text" name="sku" id="sku"  class="input-field" required>
+                            <span class='text-red'>{{ errors.sku }}</span>
+                        </div>
+                        <div class="input">
+                            <label for="name" class="input-field-label">Name </label><input type="text" name="name" id="name" class="input-field" required>
+                        </div>
+                        <div class="input">
+                            <label for="price" class="input-field-label">Price ($)</label> <input type="number" name="price" id="price" class="input-field" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="input">
+                            <label class="input-field-label" for="productType">Type Switcher</label>
+                            <select name="product_type" id="productType" required >
+                                <option selected disabled value="dvd" id="DVD">Chose The Product Type</option>
+                                <option value="dvd" id="DVD">DVD</option>
+                                <option value="book" id="Book">Book</option>
+                                <option value="furniture" id="Furniture">Furniture</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    --------------------------------------dvd-------------------------------------
+                    <div class="input-group" id="dvd-input" >
+                        <div class="input">
+                            <label for="size" class="input-field-label">Size (MB)</label><input type="number" name="product_info[size]" id="size"  class="input-field">
+                        </div>
+                    </div>
+                    -------------------------------------book--------------------------------------
+                    <div class="input-group" id="book-input" >
+                        <div class="input">
+                            <label for="weight" class="input-field-label">Weight (KG)</label><input type="number" name="product_info[weight]" id="weight"  class="input-field">
+                        </div>
+                    </div>
+                    -------------------------------------Furniture--------------------------------------
+                    <div class="input-group" id="furniture-input" >
+                        <div class="input">
+                            <label for="height" class="input-field-label">Height (CM)</label><input type="number" name="product_info[height]" id="height"  class="input-field">
+                        </div>
+                        <div class="input">
+                            <label for="width" class="input-field-label">Width (CM)</label><input type="number" name="product_info[width]" id="width"  class="input-field">
+                        </div>
+                        <div class="input">
+                            <label for="length" class="input-field-label">Length (CM)</label><input type="number" name="product_info[length]" id="length"  class="input-field">
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </section>
+
 
 
 {% endblock %}

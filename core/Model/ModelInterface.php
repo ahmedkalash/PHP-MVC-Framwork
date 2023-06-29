@@ -23,7 +23,7 @@ interface ModelInterface
      * @return $this
      * @throws UnDefinedColumnNameException
      */
-    public function set(string $attribute, string|int|bool|float $value): static;
+    public function set(string $attribute, string|int|bool|float|null $value): static;
 
 
     /**
@@ -47,7 +47,7 @@ interface ModelInterface
      * @param string $attribute
      * @return $this
      */
-    public function delete(string $attribute): static;
+    //public function delete(string $attribute): static;
 
     /**
      * Remove the Model data from both the memory and the database, but it does not unset the model variable.
@@ -106,10 +106,9 @@ interface ModelInterface
 
 
 
-
-
-
     public static function find(int $primaryKey);
+
+    public static function massDelete(array $ids): bool;
 
 
 }

@@ -19,8 +19,12 @@ class InputSanitizer implements InputSanitizerInterface
 
     public function sanitizePostData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
+        return $data;
         $sanitizedData = [];
         foreach ($data as $key=>$value) {
+            if(is_array($value)){
+                 $sanitizedData[$key]=$this->sanitizePostData($value);
+            }
             $filterResult = filter_input(INPUT_POST, $key, $filter);
             if($filterResult != 0 && $filterResult != null) {
                 $sanitizedData[$key]= $filterResult;

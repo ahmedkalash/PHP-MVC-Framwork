@@ -8,6 +8,8 @@ use app\controllers\ProductController;
 return function (\app\core\Application $app) {
     $app->router->get('/', [HomeController::class,'index']);
     $app->router->get('/add-product', [ProductController::class,'create']);
+    $app->router->post('/add-product', [ProductController::class,'store']);
+    $app->router->post('/', [ProductController::class,'massDelete']);
 
     $app->router->get('/contact', [ContactController::class,'index']);
     $app->router->post('/contact', [ContactController::class,'store']);
