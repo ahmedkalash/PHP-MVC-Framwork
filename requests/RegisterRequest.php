@@ -32,7 +32,7 @@ class RegisterRequest extends Request
         $errorMessage = null;
 
         if (is_null($first_name)) {
-            $errorMessage = "First name Is required";
+            $errorMessage = "First name is required";
         } elseif (strlen($first_name) <= 3) {
             $errorMessage = "First name Must be more that three characters.";
         }

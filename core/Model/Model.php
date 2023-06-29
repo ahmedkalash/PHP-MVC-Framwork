@@ -91,7 +91,7 @@ abstract class Model implements ModelInterface
      * @return $this
      * @throws UnDefinedColumnNameException
      */
-    public function set(string $attribute, float|bool|int|string $value): static
+    public function set(string $attribute, float|bool|int|string|null $value): static
     {
 
         if (static::columnNameExists($attribute)) {
@@ -133,7 +133,7 @@ abstract class Model implements ModelInterface
      * @return static
      * @throws UnDefinedColumnNameException
      */
-    public function delete(string $attribute): static
+    /*public function delete(string $attribute): static
     {
         if (static::columnNameExists($attribute)) {
             $this->{$attribute} = null;
@@ -141,7 +141,7 @@ abstract class Model implements ModelInterface
             throw new UnDefinedColumnNameException("Column $attribute is not defined in table " . static::tableName());
         }
         return $this;
-    }
+    }*/
 
     /**
      * Remove the Model data from both the memory and the database, but it does not unset the model variable.
@@ -186,5 +186,11 @@ abstract class Model implements ModelInterface
             return null;
         }
         return $result[0];
+    }
+
+    public static function massDelete(array $ids): bool
+    {
+        return Container::getInstance()->make(QueryBuilderInterface::class)
+            ->massDelete(static::tableName(),$ids,static::$primary_key_name);
     }
 }

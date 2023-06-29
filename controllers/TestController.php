@@ -14,7 +14,7 @@ class TestController extends \app\core\Controller\Controller
     public function test()
     {
 
-        dd(Product::all());
+        Product::massDelete([1029]);
 
 
 

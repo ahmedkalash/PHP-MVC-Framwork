@@ -8,6 +8,7 @@ use PDO;
 class QueryBuilder implements QueryBuilderInterface
 {
 
+
     /**
      * @param PDO $db
      */
@@ -40,7 +41,7 @@ class QueryBuilder implements QueryBuilderInterface
     /**
      * @param string $table
      * @param array<string, float|bool|int|string|null> $record associative array that represents the record to be inserted as $record[columnName]=value .
-     * @return Model
+     * @return Model|false
      */
     public function insert(string $table, array $record, string $primaryKeyName='id')
     {
@@ -53,16 +54,28 @@ class QueryBuilder implements QueryBuilderInterface
             $insertQuery->bindValue($column, $record[$column]??null);
         }
 
-        $insertQuery->execute();
+        if(!$insertQuery->execute()){
+            return false;
+        }
 
 
         return $this->selectWhere($table, $primaryKeyName, '=', $this->db->lastInsertId())[0];
 
     }
 
-    public function delete()
+    public function massDelete(string $table,array $ids,string $primaryKeyName='id'): bool
     {
-        // TODO: Implement delete() method.
+        if(count($ids)<=0){
+            return true;
+        }
+       $questionMarkPlaceHolders = $this->repeatQuestionMarkPlaceHolder(count($ids));
+       $deleteQuery = $this->db->prepare("DELETE FROM $table WHERE $primaryKeyName IN ($questionMarkPlaceHolders)");
+
+       foreach ($ids as $index=>$id){
+           $deleteQuery->bindValue($index+1, $id);
+       }
+
+       return $deleteQuery->execute();
     }
 
 
@@ -92,5 +105,20 @@ class QueryBuilder implements QueryBuilderInterface
     private function getOrderByClause(string $orderBy=null): string
     {
         return $orderBy? 'ORDER BY '.$orderBy  : '';
+    }
+
+    private function repeatQuestionMarkPlaceHolder(int $count)
+    {
+        $questionMarkPlaceHolders = '';
+        for ($i = 1; $i<=$count ; $i++){
+            if($i==1){
+               $questionMarkPlaceHolders .= '?';
+            }
+            else {
+                $questionMarkPlaceHolders .= ',?';
+            }
+        }
+        return $questionMarkPlaceHolders;
+
     }
 }

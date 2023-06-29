@@ -108,6 +108,13 @@ header .logo:hover {
     border-radius: 7px;
     border-color: #f2cf9b;
     font-size: 20px;
+    color: #45464c;
+}
+
+.add-btn-anchor {
+    text-decoration: none;
+    color: #45464c;
+    font-size: 20px;
 }
 
 .products .action .mass-delete-btn{
@@ -121,6 +128,22 @@ header .logo:hover {
 .products .action .add-btn:hover{
     background-color: sandybrown;
     opacity: 0.8;
+}
+
+
+.input {
+    margin: 1rem;
+}
+
+.input-group {
+    margin: 1rem;
+}
+.input-field-label {
+    margin: 1rem;
+}
+.input-field {
+
+    margin-left: 1rem;
 }
 
 
