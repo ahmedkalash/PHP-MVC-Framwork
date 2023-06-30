@@ -10,6 +10,8 @@ class ProductAttribute extends \app\core\Model\Model
      */
     public static function columns(): array
     {
-        // TODO: Implement columns() method.
+       return [
+           //
+       ];
     }
 }

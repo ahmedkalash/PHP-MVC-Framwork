@@ -19,6 +19,9 @@ class AddProductRequest extends \app\core\Request\Request
         if ($this->validatePrice() !== true) {
             $errors = array_merge($errors, $this->validatePrice());
         }
+        if ($this->validateProductType() !== true) {
+            $errors = array_merge($errors, $this->validateProductType());
+        }
 
         return count($errors) ? $errors : true;
     }
@@ -58,6 +61,18 @@ class AddProductRequest extends \app\core\Request\Request
 
         if(is_null($price)){
             $errorMessage = "Price is required";
+        }
+
+        return $errorMessage ? [$field_name => $errorMessage] : true;
+    }
+    private function validateProductType()
+    {
+        $field_name = 'product_type';
+        $productType = $this->input($field_name);
+        $errorMessage = null;
+
+        if(is_null($productType)){
+            $errorMessage = "Product type is required";
         }
 
         return $errorMessage ? [$field_name => $errorMessage] : true;

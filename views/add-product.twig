@@ -36,8 +36,8 @@
                     <div class="input-group">
                         <div class="input">
                             <label class="input-field-label" for="productType">Type Switcher</label>
-                            <select name="product_type" id="productType" required >
-                                <option selected disabled value="dvd" id="DVD">Chose The Product Type</option>
+                            <select name="product_type" id="productType" required oninput="typeSwitch()">
+                                <option selected disabled>Chose The Product Type</option>
                                 <option value="dvd" id="DVD">DVD</option>
                                 <option value="book" id="Book">Book</option>
                                 <option value="furniture" id="Furniture">Furniture</option>
@@ -46,28 +46,43 @@
                     </div>
 
 
-                    --------------------------------------dvd-------------------------------------
+                   {# --------------------------------------dvd-------------------------------------#}
                     <div class="input-group" id="dvd-input" >
+                        <div class="input-hint">
+                            <p>Please provide the size of the disk in MB.</p>
+                        </div>
                         <div class="input">
-                            <label for="size" class="input-field-label">Size (MB)</label><input type="number" name="product_info[size]" id="size"  class="input-field">
+
+                            <label for="size" class="input-field-label">Size (MB)</label>
+                            <input type="number" name="product_info[size]" id="size"  class="input-field" disabled required>
                         </div>
                     </div>
-                    -------------------------------------book--------------------------------------
+                   {# -------------------------------------book--------------------------------------#}
                     <div class="input-group" id="book-input" >
+                        <div class="input-hint">
+                            <p>Please provide the Weight of the book in KG.</p>
+                        </div>
                         <div class="input">
-                            <label for="weight" class="input-field-label">Weight (KG)</label><input type="number" name="product_info[weight]" id="weight"  class="input-field">
+                            <label for="weight" class="input-field-label">Weight (KG)</label>
+                            <input type="number" name="product_info[weight]" id="weight"  class="input-field" disabled required>
                         </div>
                     </div>
-                    -------------------------------------Furniture--------------------------------------
-                    <div class="input-group" id="furniture-input" >
-                        <div class="input">
-                            <label for="height" class="input-field-label">Height (CM)</label><input type="number" name="product_info[height]" id="height"  class="input-field">
+                   {# -------------------------------------Furniture--------------------------------------#}
+                    <div class="input-group" id="furniture-input" aria-disabled="true">
+                        <div class="input-hint">
+                        <p>Please provide dimensions in HxWxLx.</p>
                         </div>
                         <div class="input">
-                            <label for="width" class="input-field-label">Width (CM)</label><input type="number" name="product_info[width]" id="width"  class="input-field">
+                            <label for="height" class="input-field-label">Height (CM)</label>
+                            <input type="number" name="product_info[height]" id="height"  class="input-field" disabled required>
                         </div>
                         <div class="input">
-                            <label for="length" class="input-field-label">Length (CM)</label><input type="number" name="product_info[length]" id="length"  class="input-field">
+                            <label for="width" class="input-field-label">Width (CM)</label>
+                            <input type="number" name="product_info[width]" id="width"  class="input-field" disabled required>
+                        </div>
+                        <div class="input">
+                            <label for="length" class="input-field-label">Length (CM)</label>
+                            <input type="number" name="product_info[length]" id="length"  class="input-field" disabled required>
                         </div>
 
                     </div>

@@ -130,7 +130,12 @@ header .logo:hover {
     opacity: 0.8;
 }
 
-
+.input-hint {
+    margin: 2rem;
+    font-style: italic;
+    font-size: small;
+     font-weight: bold;
+}
 .input {
     margin: 1rem;
 }
@@ -144,6 +149,13 @@ header .logo:hover {
 .input-field {
 
     margin-left: 1rem;
+}
+
+#dvd-input,
+#book-input,
+#furniture-input
+{
+    display: none;
 }
 
 
