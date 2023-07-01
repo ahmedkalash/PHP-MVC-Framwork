@@ -42,7 +42,11 @@ class ProductController extends Controller
 
         }
 
-        return $this->response->redirect('/');
+        return [
+            'status'=>200,
+            'location'=>'/'
+        ];
+
     }
 
     public function massDelete(MassDeleteRequest $request){

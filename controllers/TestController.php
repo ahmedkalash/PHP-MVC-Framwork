@@ -14,7 +14,15 @@ class TestController extends \app\core\Controller\Controller
     public function test()
     {
 
-        Product::massDelete([1029]);
+      // dd($this->request->headers());
+
+
+        return[
+          'status'=>123,
+          'errors'=>[
+              'name'=>'this field is required'
+          ]
+        ];
 
 
 
