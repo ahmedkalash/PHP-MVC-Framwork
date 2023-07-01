@@ -144,11 +144,18 @@ class Router implements RouterInterface
                 );
 
             } else {
+                if($this->request->isAjax()){
+                    return [
+                        'status'=>400,
+                        'errors'=>$validationResult
+                    ];
 
-                // $_SESSION['errors'] = $validationResult;
-                $this->sessionHandler->flash('errors', $validationResult);
+                } else {
+                    // $_SESSION['errors'] = $validationResult;
+                    $this->sessionHandler->flash('errors', $validationResult);
+                    return $this->response->setStatusCode(400)->redirectBack();
+                }
 
-                return $this->response->setStatusCode(422)->redirectBack();
             }
         }
 

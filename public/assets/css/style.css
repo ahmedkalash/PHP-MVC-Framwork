@@ -131,13 +131,15 @@ header .logo:hover {
 }
 
 .input-hint {
-    margin: 2rem;
+    margin-left: 2rem ;
+    margin-top: 2rem ;
     font-style: italic;
     font-size: small;
-     font-weight: bold;
+    font-weight: bold;
 }
 .input {
     margin: 1rem;
+    display: flex;
 }
 
 .input-group {
@@ -147,9 +149,17 @@ header .logo:hover {
     margin: 1rem;
 }
 .input-field {
-
     margin-left: 1rem;
 }
+
+.input-field-label-div {
+    width: 10rem;
+}
+
+.text-red{
+    color: tomato;
+}
+
 
 #dvd-input,
 #book-input,

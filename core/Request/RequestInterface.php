@@ -102,5 +102,6 @@ interface RequestInterface
 
     public function validate(): bool|array;
 
+    public function isAjax():bool;
 
 }

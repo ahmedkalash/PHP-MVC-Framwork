@@ -1,5 +1,5 @@
 <?php
-declare(strict_types=1);
+
 
 namespace app\requests;
 
@@ -32,7 +32,7 @@ class AddProductRequest extends \app\core\Request\Request
         $name = $this->input($field_name);
         $errorMessage = null;
 
-        if(is_null($name)){
+        if(is_null($name) || $name==''){
             $errorMessage = "Name is required";
         }
 
@@ -46,7 +46,7 @@ class AddProductRequest extends \app\core\Request\Request
         $sku = $this->input($field_name);
         $errorMessage = null;
 
-        if(is_null($sku)){
+        if(is_null($sku) || $sku==''){
             $errorMessage = "SKU is required";
         }
 
@@ -55,13 +55,16 @@ class AddProductRequest extends \app\core\Request\Request
 
     private function validatePrice()
     {
-         $field_name = 'price';
+        $field_name = 'price';
         $price = $this->input($field_name);
         $errorMessage = null;
 
-        if(is_null($price)){
+        if(is_null($price) || $price=='' || $price==0){
             $errorMessage = "Price is required";
+        }elseif(!is_numeric($price)){
+            $errorMessage = "Price must be a number";
         }
+
 
         return $errorMessage ? [$field_name => $errorMessage] : true;
     }
@@ -71,8 +74,10 @@ class AddProductRequest extends \app\core\Request\Request
         $productType = $this->input($field_name);
         $errorMessage = null;
 
-        if(is_null($productType)){
+        if(is_null($productType) || $productType==''){
             $errorMessage = "Product type is required";
+        }elseif(!in_array($productType,['dvd','book','furniture'])){
+             $errorMessage = "Invalid product type";
         }
 
         return $errorMessage ? [$field_name => $errorMessage] : true;

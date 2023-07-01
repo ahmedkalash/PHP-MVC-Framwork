@@ -284,4 +284,9 @@ class Request implements RequestInterface
     {
         return true;
     }
+
+    public function isAjax():bool
+    {
+       return $this->headers('ACCEPT')=="application/json";
+    }
 }

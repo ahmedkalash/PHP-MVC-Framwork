@@ -7,7 +7,7 @@ add database transaction and wrap add product logic into a transaction
 add addProduct validation
 add route name option  to the Route class
 add asset function
-add js validation ex(product_type)
+add js validation ex(product_type, price max num based on the database)
 add global exception handler
 add magic setters and getters
 store and show dimensions in HxWxLx.
