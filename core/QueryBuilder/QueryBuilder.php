@@ -121,4 +121,15 @@ class QueryBuilder implements QueryBuilderInterface
         return $questionMarkPlaceHolders;
 
     }
+
+
+    public function unique(string|int|float|bool|null $value,string $table, string $column): bool
+    {
+        $selectQuery =  $this->db->prepare("SELECT COUNT(*) as count FROM $table WHERE $column = :value");
+        $selectQuery->bindValue('value', $value);
+
+        $selectQuery->execute();
+        return $selectQuery->fetch(PDO::FETCH_ASSOC)['count']===0;
+
+    }
 }

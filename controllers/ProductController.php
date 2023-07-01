@@ -16,6 +16,7 @@ class ProductController extends Controller
     public function create()
     {
         return $this->twig->render(ViewPath::ADD_PRODUCT);
+
     }
 
     public function store(AddProductRequest $request){

@@ -11,3 +11,4 @@ add js validation ex(product_type, price max num based on the database)
 add global exception handler
 add magic setters and getters
 store and show dimensions in HxWxLx.
+make it responsive

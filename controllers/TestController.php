@@ -6,6 +6,7 @@ namespace app\controllers;
 use app\models\Product;
 use app\models\ProductAttributeValue;
 use app\models\User;
+use PDO;
 
 class TestController extends \app\core\Controller\Controller
 {
@@ -13,8 +14,12 @@ class TestController extends \app\core\Controller\Controller
 
     public function test()
     {
+        $selectQuery =  $this->container->make(\PDO::class)
+            ->prepare("SELECT COUNT(*) as count FROM products WHERE sku = 'ADF12254he77'");
 
-      // dd($this->request->headers());
+        $selectQuery->execute();
+         dd($selectQuery->fetch(PDO::FETCH_ASSOC)['count']);
+      //dd((string) true);
 
 
         return[
