@@ -12,7 +12,7 @@ class Validator implements ValidatorInterface
         return ucfirst($str);
     }
 
-    public static function notNull(float|bool|int|string|null $var, string $name, string $errorMessage = null): bool|array
+    public static function notNull(float|bool|int|string|null|array $var, string $name, string $errorMessage = null): bool|array
     {
         $presentationName = static::snackCaseToNormalText($name);
         return is_null($var)? [
@@ -30,9 +30,15 @@ class Validator implements ValidatorInterface
 
     }
 
-    public static function required(string $var, string $name, string $errorMessage = null): bool|array
+    public static function required(string|null $var, string $name, string $errorMessage = null): bool|array
     {
-        return (static::notNull($var,$name,$errorMessage)===true )? true:static::notEmpty($var,$name,$errorMessage);
+        $presentationName = static::snackCaseToNormalText($name);
+        if(static::notNull($var,$name,$errorMessage)===true && static::notEmpty($var,$name,$errorMessage) ===true){
+            return true;
+        }
+        return [
+            $name=>$errorMessage ?? "$presentationName is required"
+        ];
     }
 
 

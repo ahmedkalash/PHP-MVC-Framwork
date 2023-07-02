@@ -11,6 +11,6 @@ class ProductAttributeValue extends \app\core\Model\Model
      */
     public static function columns(): array
     {
-        return ['id','attribute','product_id','value'];
+        return ['id','attribute','product_id','value','unit'];
     }
 }

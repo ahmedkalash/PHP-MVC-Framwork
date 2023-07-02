@@ -104,4 +104,6 @@ interface RequestInterface
 
     public function isAjax():bool;
 
+    public function afterValidation():void;
+
 }

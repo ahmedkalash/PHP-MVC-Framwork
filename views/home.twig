@@ -15,6 +15,7 @@
           </div>
           <div class="content">
               <form class="content" id="delete_form" action="/" method="post">
+
                   {% for item in products %}
                       <div class="card">
                           <input class="delete-checkbox" type="checkbox" name="ids[]" value="{{ item.get('id') }}">
@@ -22,10 +23,9 @@
                               <h3>{{ item.get('sku') }}</h3>
                               <h3>{{ item.get('name') }}</h3>
                               <h3>{{ item.get('price') }} $</h3>
-                              {% set break = false %}
                               {% for key, attribute in item.attributes %}
                                   {% if loop.first and attribute !=null %}
-                                      <h3>{{key}}: {{attribute}}</h3>
+                                      <h3>{{key}}: {{attribute.value}} {{  attribute.unit}}</h3>
                                   {% endif %}
                               {% endfor %}
                           </div>
