@@ -5,10 +5,9 @@ namespace app\core\Request;
 
 use app\core\InputSanitizer\InputSanitizerInterface;
 
-class Request implements RequestInterface
+abstract class AbstractRequest implements RequestInterface
 {
 
-    // TODO make this class abstract
     protected array $getData;
     protected array $postData;
     protected array $cookies;

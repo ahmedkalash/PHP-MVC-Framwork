@@ -7,7 +7,7 @@
             "app\\requests\\": "requests/",
             "app\\models\\": "models/"
         },
-        "files": ["./core/Helpers/Dumping.php"]
+        "files": ["./core/Helpers/Dumping.php","./core/Helpers/Helpers.php"]
     },
 
     "authors": [

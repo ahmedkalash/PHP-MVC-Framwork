@@ -3,8 +3,6 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\core\Controller\Controller;
-use app\core\Model\Model;
-use app\core\Request\Request;
 use app\core\view\ViewPath;
 use app\models\Product;
 use app\models\ProductAttributeValue;
@@ -25,6 +23,9 @@ class ProductController extends Controller
             'size'=>'MB',
             'weight'=>'KG'
             ];
+
+
+
         $product = $this->container->make(Product::class);
         $product->set('name',$request->input('name'));
         $product->set('sku',$request->input('sku'));
@@ -52,8 +53,6 @@ class ProductController extends Controller
         $product_attribute_value->save();
 
 
-
-
         return [
             'status'=>200,
             'location'=>'/'
@@ -61,11 +60,28 @@ class ProductController extends Controller
 
     }
 
+    public function all(){
+        $products=Product::all('id',true);
+        return [
+            'status'=>200,
+            'products'=>[
+                'count'=>count($products),
+                'list'=>$products
+            ]
+        ];
+    }
+
     public function massDelete(MassDeleteRequest $request){
        if($request->input('ids') != null ){
            Product::massDelete($request->input('ids'));
        }
-       return $this->response->redirectBack();
+
+        return [
+            'status'=>200,
+            'location'=>'/'
+        ];
+
+
     }
 
 }

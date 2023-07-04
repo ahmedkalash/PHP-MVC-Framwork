@@ -3,8 +3,8 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\core\Controller\Controller;
-use app\core\Request\Request;
 use app\core\view\ViewPath;
+use app\requests\Request;
 
 class ContactController extends Controller
 {

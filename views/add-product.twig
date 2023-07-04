@@ -7,19 +7,13 @@
         <h2 class="title">Product Add</h2>
         <section class="products" id="products">
             <div class="action">
-                <button  class="add-btn" onclick="submitForm('product_form')">Save</button>
+                <button  class="add-btn" onclick="submitAddProductForm('product_form')">Save</button>
                 <button class="mass-delete-btn" id="delete-product-btn"><a class="add-btn-anchor" href="/">Cancel</a></button>
             </div>
 
-            {#---just on development for dubuging---#}
-            {% for error in errors %}<br>
-                <h5>{{ error }} </h5>
-            {% endfor %}
-
-
             <div class="content">
 
-                <form action="/add-product" method="post" id="product_form">
+                <form action="/api/v1/add-product" method="post" id="product_form">
                     <div class="input-group" id="base-input">
                         <div class="input">
                             <div class="input-field-label-div">
@@ -28,7 +22,7 @@
 
                             <div class="input-field-div" >
                                 <div  class="input-field">
-                                    <input type="text" name="sku" id="sku" >
+                                    <input type="text" name="sku" id="sku" required>
                                 </div>
 
                                 <div class="input-field" >
@@ -44,7 +38,7 @@
 
                             <div class="input-field-div" >
                                 <div class="input-field">
-                                    <input type="text" name="name" id="name"  >
+                                    <input type="text" name="name" id="name"  required>
                                 </div>
 
 

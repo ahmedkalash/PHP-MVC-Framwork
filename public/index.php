@@ -12,10 +12,17 @@ $dotenv->safeLoad();
 require_once __DIR__ . "/../core/bingings.php";
 
 
+$routesFiles=[
+    'web',
+    'api'
+];
+foreach ($routesFiles as $routesFile){
+    $routesClosure = include_once \app\core\Application::ROOT_DIR . "/routes/$routesFile.php";
+    $container->call($routesClosure, ['app'=>$app]);
+}
 
-$container->make(\app\core\Application::class);
-$routesClosure = include_once \app\core\Application::ROOT_DIR . '/routes/web.php';
-$container->call($routesClosure, ['app'=>$app]);
+//$container->make(\app\core\Application::class);
+
 
 $app->run();
 

@@ -3,9 +3,8 @@ declare(strict_types=1);
 namespace app\controllers;
 
 use app\core\Controller\Controller;
-use app\core\Request\Request;
-use app\core\Request\RequestInterface;
 use app\requests\RegisterRequest;
+use app\requests\Request;
 
 class AuthController extends Controller
 {

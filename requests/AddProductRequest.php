@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace app\requests;
 
-use app\core\Request\Request;
 use app\core\Validator\Validator;
 use app\models\Product;
 

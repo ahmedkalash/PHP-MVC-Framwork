@@ -18,7 +18,8 @@ abstract class Controller implements ControllerInterface
         protected Container   $container,
         protected Environment $twig,
         protected SessionHandlerInterface $sessionHandler,
-        protected QueryBuilderInterface $queryBuilder
+        protected QueryBuilderInterface $queryBuilder,
+        protected \PDO $db
     ) {
 
     }
