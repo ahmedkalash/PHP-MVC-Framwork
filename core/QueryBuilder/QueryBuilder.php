@@ -151,8 +151,6 @@ class QueryBuilder implements QueryBuilderInterface
             return false;
         }
 
-
-
     }
 
 }

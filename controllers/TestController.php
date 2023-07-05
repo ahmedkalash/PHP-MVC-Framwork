@@ -17,6 +17,13 @@ class TestController extends \app\core\Controller\Controller
     public function test()
     {
 
+        echo  strip_tags('<script>
+alert("skjdf")
+</script>');
+        echo '<br>';
+        echo htmlspecialchars('<h1>dhferthj</h1>');
+        return;
+
 
 
 //        dd((container()->make(PDO::class) === Container::getInstance()->make(PDO::class))  ===(Container::getInstance()->make(PDO::class) === $this->container->make(PDO::class)));

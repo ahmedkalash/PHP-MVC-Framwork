@@ -72,6 +72,13 @@ function submitAddProductForm(formID) {
     clearOldErrorElements();
     let formData = new FormData(form);
 
+
+  /*  if(!validateDecimal(formData.get('price'),6,2)){
+        let errorElement = document.getElementById(name + "price-error");
+        errorElement.innerText = '* Please enter a valid decimal number between 0:999999.99';
+    }*/
+
+
     fetch(form.action, {
         method: 'POST',
         headers: {
@@ -172,4 +179,33 @@ function massDelete(formID) {
 
 }
 
+
+
+
+
+function validateDecimal(decimalNum, integerPartLength, decimalPartLength) {
+     decimalNum =parseFloat(decimalNum.toString().trim());
+
+    let arrNum;
+
+    let strNum = decimalNum.toString();
+    arrNum = strNum.split('.');
+   //console.log((arrNum[1].length)??0)
+
+    let integerPart = arrNum[0] ?? 0;
+    let decimalPart = arrNum[1] ?? 0;
+
+    if (integerPart.toString().length > integerPartLength || (decimalPart.toString().length) > decimalPartLength ) {
+        return false
+    }
+
+
+
+
+
+}
+
+// if (window.location.pathname==='/') {
+//      //validateDecimal(111111.555,4,1);
+// }
 

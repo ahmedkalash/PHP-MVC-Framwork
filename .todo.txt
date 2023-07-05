@@ -1,9 +1,8 @@
 add route name option  to the Route class
 add asset function
-add global exception handler
+
 add magic setters and getters
 add database transaction and wrap add product logic into a transaction
-make it responsive
-fix input sanitizer
 
->> add js and html validation ex(product_type, price max num based on the database)
+
+

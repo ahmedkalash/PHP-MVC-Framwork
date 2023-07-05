@@ -4,6 +4,10 @@ declare(strict_types=1);
 /*** @var $app \app\core\Application*/
 //phpinfo();
 
+set_exception_handler(function ($exception){
+    return null;
+});
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));

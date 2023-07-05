@@ -59,7 +59,7 @@ class AddProductRequest extends Request
         if(($res = Validator::notEmpty($name,$field_name)) !== true){
             return $res;
         }
-        if(($res = Validator::maxLength($name,255,$field_name)) !== true){
+        if(($res = Validator::maxLength($name,250,$field_name)) !== true){
             return $res;
         }
 
@@ -77,6 +77,9 @@ class AddProductRequest extends Request
             return $res;
         }
         if(($res = Validator::notEmpty($sku,$field_name)) !== true){
+            return $res;
+        }
+        if(($res = Validator::maxLength($sku,250,$field_name)) !== true){
             return $res;
         }
         if(($res = Validator::unique($sku, Product::tableName(),'sku',$field_name)) !== true){
