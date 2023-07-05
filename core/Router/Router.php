@@ -137,7 +137,7 @@ class Router implements RouterInterface
         if (isset($request)) {
             $validationResult = $request->validate();
             if ($validationResult === true) {
-
+                $request->afterValidation();
                 return $this->container->call(
                     [$controller, $method],
                     array_merge($params, ['request' => $request])

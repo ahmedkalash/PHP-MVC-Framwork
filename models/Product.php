@@ -26,19 +26,19 @@ class Product extends Model
      * @return Product[]
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public static function all(string $orderBy=null): array
+    public static function all(string $orderBy=null,bool $modelAsArray=false): array
     {
         $orderBy = 'ORDER BY '.($orderBy?? static::primaryKeyName());
         $table = static::tableName();
         $selectQuery =  Container::getInstance()->make(\PDO::class)
-            ->prepare("SELECT product.id , product.name , product.price, product.sku, attribute , value
+            ->prepare("SELECT product.id , product.name , product.price, product.sku, attribute , value, unit
                     FROM $table as product
                     left join product_attributes_values pav on product.id = pav.product_id
                     $orderBy");
         $selectQuery->execute();
         $records = $selectQuery->fetchAll(PDO::FETCH_ASSOC);
 
-        return \app\core\Facade\Product::assemble($records);
+        return $modelAsArray? \app\core\Facade\Product::assembleModelAsArray($records):\app\core\Facade\Product::assemble($records);
     }
 
     /**
@@ -50,10 +50,16 @@ class Product extends Model
         $assembled = [];
         foreach ($records as& $record) {
             if(isset($assembled[$record['id']])) {
-                $assembled[$record['id']]->attributes[$record['attribute']]=$record['value'];
+                $assembled[$record['id']]->attributes[$record['attribute']]=[
+                    'value'=>$record['value'],
+                    'unit'=>$record['unit']
+                ];
             } else {
                 $attributes=[];
-                $attributes[$record['attribute']]=$record['value'];
+                $attributes[$record['attribute']]=[
+                    'value'=>$record['value'],
+                    'unit'=>$record['unit']
+                ];
                 $product = Product::fromArray($record);
                 $product->attributes =$attributes;
                 $assembled[$product->id]=$product;
@@ -61,7 +67,30 @@ class Product extends Model
 
             unset($record);
         }
-        return array_values($assembled);
+        return ($assembled);
+    }
+    public function assembleModelAsArray(array $records):array
+    {
+        $assembled = [];
+        foreach ($records as& $record) {
+                $attributes=[];
+                $attributes[$record['attribute']]=[
+                    'value'=>$record['value'],
+                    'unit'=>$record['unit']
+                ];
+
+                foreach (array_keys($record) as $property){
+                    if(!in_array($property,static::columns())){
+                        unset($record[$property]);
+                    }
+                }
+                $record['attributes']=$attributes;
+                $assembled[]=$record;
+        }
+
+
+
+        return ($assembled);
     }
 
 

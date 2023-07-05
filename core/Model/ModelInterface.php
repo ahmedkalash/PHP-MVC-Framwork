@@ -23,7 +23,7 @@ interface ModelInterface
      * @return $this
      * @throws UnDefinedColumnNameException
      */
-    public function set(string $attribute, string|int|bool|float|null $value): static;
+    public function set(string $attribute, mixed $value): static;
 
 
     /**
@@ -37,7 +37,7 @@ interface ModelInterface
      * @param string $attribute
      * @return string|int|bool|float|null
      */
-    public function get(string $attribute): string|int|bool|float|null;
+    public function get(string $attribute): mixed;
 
 
     /**
@@ -110,5 +110,6 @@ interface ModelInterface
 
     public static function massDelete(array $ids): bool;
 
+    public function toArray():array;
 
 }

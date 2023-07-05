@@ -10,11 +10,13 @@
      <section class="products" id="products">
 
           <div class="action">
-               <button class="add-btn"><a class="add-btn-anchor" href="add-product">ADD</a></button>
-               <button class="mass-delete-btn" id="delete-product-btn" form="delete_form" type="submit">MASS DELETE</button>
+               <button class="add-btn" onclick="redirect('add-product')">ADD</button>
+               <button class="mass-delete-btn" id="delete-product-btn" onclick="massDelete('delete_form')" type="submit">MASS DELETE</button>
           </div>
           <div class="content">
-              <form class="content" id="delete_form" action="/" method="post">
+              <form class="content" id="delete_form" action="/api/v1/products/mass-delete" method="post">
+{#
+
                   {% for item in products %}
                       <div class="card">
                           <input class="delete-checkbox" type="checkbox" name="ids[]" value="{{ item.get('id') }}">
@@ -22,16 +24,26 @@
                               <h3>{{ item.get('sku') }}</h3>
                               <h3>{{ item.get('name') }}</h3>
                               <h3>{{ item.get('price') }} $</h3>
-                              {% set break = false %}
                               {% for key, attribute in item.attributes %}
                                   {% if loop.first and attribute !=null %}
-                                      <h3>{{key}}: {{attribute}}</h3>
+                                      <h3>{{key}}: {{attribute.value}} {{  attribute.unit}}</h3>
                                   {% endif %}
                               {% endfor %}
                           </div>
                       </div>
 
                   {% endfor %}
+
+#}
+
+
+                  <div class="card" id="product-card">
+                      <input class="delete-checkbox" type="checkbox" name="ids[]" value="">
+                      <div class="info">
+                      </div>
+                  </div>
+
+
               </form>
 
 

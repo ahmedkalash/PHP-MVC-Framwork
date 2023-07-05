@@ -37,13 +37,13 @@ $container->singleton(\app\core\Session\SessionHandler::class, function () use (
     return $sessionHandler;
 });
 
-$request = $container->make(\app\core\Request\Request::class);
-$container->singleton(\app\core\Request\Request::class, function () use ($request) {
+$request = $container->make(\app\requests\Request::class);
+$container->singleton(\app\requests\Request::class, function () use ($request) {
     return $request;
 });
 
 
-$container->bind(\app\core\Request\RequestInterface::class, \app\core\Request\Request::class);
+$container->bind(\app\core\Request\RequestInterface::class, \app\requests\Request::class);
 
 
 $response = $container->make(\app\core\Response\Response::class);

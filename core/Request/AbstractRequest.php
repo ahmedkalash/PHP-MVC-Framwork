@@ -5,10 +5,9 @@ namespace app\core\Request;
 
 use app\core\InputSanitizer\InputSanitizerInterface;
 
-class Request implements RequestInterface
+abstract class AbstractRequest implements RequestInterface
 {
 
-    // TODO make this class abstract
     protected array $getData;
     protected array $postData;
     protected array $cookies;
@@ -62,6 +61,7 @@ class Request implements RequestInterface
     protected function setPostData(array $data): void
     {
         $this->postData = $this->inputSanitizer->sanitizePostData($data);
+        //dd( $this->postData);
     }
 
     /**
@@ -288,5 +288,10 @@ class Request implements RequestInterface
     public function isAjax():bool
     {
        return $this->headers('ACCEPT')=="application/json";
+    }
+
+    public function afterValidation():void
+    {
+
     }
 }

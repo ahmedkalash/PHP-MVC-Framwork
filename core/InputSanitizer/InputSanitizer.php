@@ -9,26 +9,27 @@ class InputSanitizer implements InputSanitizerInterface
     {
         $sanitizedData = [];
         foreach ($data as $key=>$value) {
-            $filterResult = filter_input(INPUT_GET, $key, $filter);
-            if($filterResult != 0 && $filterResult != null) {
-                $sanitizedData[$key]= $filterResult;
+            if(is_array($value)){
+                $sanitizedData[$key] =$this->sanitizePostData($value);
+            }else{
+                $sanitizedData[$key] = strip_tags($value);
             }
+
         }
         return $sanitizedData;
     }
 
     public function sanitizePostData(array $data, int $filter=FILTER_SANITIZE_FULL_SPECIAL_CHARS): array
     {
-        return $data;
+        //return $data;
         $sanitizedData = [];
         foreach ($data as $key=>$value) {
             if(is_array($value)){
-                 $sanitizedData[$key]=$this->sanitizePostData($value);
+                $sanitizedData[$key] =$this->sanitizePostData($value);
+            }else{
+                $sanitizedData[$key] = strip_tags($value);
             }
-            $filterResult = filter_input(INPUT_POST, $key, $filter);
-            if($filterResult != 0 && $filterResult != null) {
-                $sanitizedData[$key]= $filterResult;
-            }
+
         }
         return $sanitizedData;
     }

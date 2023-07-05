@@ -76,7 +76,7 @@ abstract class Model implements ModelInterface
 
     public static function fromArray(array $array):static
     {
-        $model = Container::getInstance()->make(static::class);
+        $model = container()->make(static::class);
         foreach ($array as $key => $value) {
             if(static::columnNameExists($key)) {
                 $model->{$key}=$value;
@@ -91,7 +91,7 @@ abstract class Model implements ModelInterface
      * @return $this
      * @throws UnDefinedColumnNameException
      */
-    public function set(string $attribute, float|bool|int|string|null $value): static
+    public function set(string $attribute, mixed $value): static
     {
 
         if (static::columnNameExists($attribute)) {
@@ -123,7 +123,7 @@ abstract class Model implements ModelInterface
      * @param string $attribute
      * @return string|int|bool|float|null
      */
-    public function get(string $attribute): string|int|bool|float|null
+    public function get(string $attribute): mixed
     {
         return $this->{$attribute} ?? null;
     }
@@ -190,7 +190,22 @@ abstract class Model implements ModelInterface
 
     public static function massDelete(array $ids): bool
     {
-        return Container::getInstance()->make(QueryBuilderInterface::class)
+        return container()->make(QueryBuilderInterface::class)
             ->massDelete(static::tableName(),$ids,static::$primary_key_name);
+    }
+    public function toArray():array{
+        $modelArray=[];
+        foreach (static::columns() as $column){
+            if($this->get($column) instanceof ModelInterface){
+                $modelArray[$column]=$this->get($column)->toArray();
+            }else{
+                $modelArray[$column]=$this->get($column);
+            }
+        }
+        return $modelArray;
+    }
+
+    public static function columns() : array{
+     return [];
     }
 }

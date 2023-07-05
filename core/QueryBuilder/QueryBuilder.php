@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace app\core\QueryBuilder;
 
 use app\core\Model\Model;
+use Illuminate\Container\Container;
 use PDO;
 
 class QueryBuilder implements QueryBuilderInterface
@@ -13,7 +14,7 @@ class QueryBuilder implements QueryBuilderInterface
      * @param PDO $db
      */
     public function __construct(
-        public PDO $db
+        public PDO $db,
     ) {
     }
 
@@ -121,4 +122,35 @@ class QueryBuilder implements QueryBuilderInterface
         return $questionMarkPlaceHolders;
 
     }
+
+
+    public function unique(string|int|float|bool|null $value,string $table, string $column): bool
+    {
+        $selectQuery =  $this->db->prepare("SELECT COUNT(*) as count FROM $table WHERE $column = :value");
+        $selectQuery->bindValue('value', $value);
+
+        $selectQuery->execute();
+        return $selectQuery->fetch(PDO::FETCH_ASSOC)['count']===0;
+
+    }
+
+
+    /**
+     * @throws \Throwable
+     */
+    public function transaction(\Closure $callback):bool{
+        if(!$this->db->beginTransaction()){
+            return false;
+        }
+        try {
+            Container::getInstance()->call($callback);
+
+            return $this->db->commit();
+
+        }catch (\Throwable $throwable){
+            return false;
+        }
+
+    }
+
 }
