@@ -1,8 +1,0 @@
-add route name option  to the Route class
-add asset function
-
-add magic setters and getters
-add database transaction and wrap add product logic into a transaction
-
-
-
