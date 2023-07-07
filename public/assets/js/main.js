@@ -1,5 +1,19 @@
+let ids = {'DVD': 'dvd-input', 'Book': 'book-input', 'Furniture': 'furniture-input'};
+
 if (window.location.pathname==='/') {
     window.onload = getAllProducts;
+}
+if(document.getElementById('productType')!==null){
+    window.onload= function (){
+        let switcher = document.getElementById('productType');
+        if(switcher!==null  ){
+            let typeID = switcher.options[switcher.selectedIndex].id;
+            if( typeof typeID !== 'undefined' && typeID.trim().length !==0){
+                showElement(ids[typeID]);
+                enableDivsInputElements({"${typeID}":ids[typeID]})
+            }
+        }
+    }
 }
 
 function redirect(to){
@@ -44,19 +58,20 @@ function enableDivsInputElements(DivsIds) {
 
 
 
+if(document.getElementById('productType') !== null){
+    document.getElementById('productType').onchange = function () {
+        hideElements(ids);
+        disableDivsInputElements(ids);
 
-function typeSwitch (){
-    let ids = {'dvd': 'dvd-input', 'book': 'book-input', 'furniture': 'furniture-input'};
-    hideElements(ids);
-    disableDivsInputElements(ids);
 
+        let targetID = ids[(this.options[this.selectedIndex]).id];
+        showElement(targetID);
+        enableDivsInputElements([targetID]);
 
-    input = document.getElementById('productType');
-    let targetID = ids[input.value];
-    showElement(targetID ); 
-    enableDivsInputElements([targetID]);
+    }
 
 }
+
 
 
 function clearOldErrorElements() {
@@ -72,24 +87,16 @@ function submitAddProductForm(formID) {
     clearOldErrorElements();
     let formData = new FormData(form);
 
-
-  /*  if(!validateDecimal(formData.get('price'),6,2)){
-        let errorElement = document.getElementById(name + "price-error");
-        errorElement.innerText = '* Please enter a valid decimal number between 0:999999.99';
-    }*/
-
-
     fetch(form.action, {
         method: 'POST',
         headers: {
-        'Accept': 'application/json'
+            'Accept': 'application/json'
         },
         body: formData
     }).then(function(response) {
-            return response.json();
-        })
+        return response.json();
+    })
         .then(function(data) {
-            //console.log(data); /* *------------------*/
             let errorElement;
             if (data.status === 200) {
                 redirect(data.location);
@@ -106,7 +113,7 @@ function submitAddProductForm(formID) {
 
 
 function getAllProducts() {
-    url = '/api/v1/products';
+    let url = '/api/v1/products';
     fetch(url, {
         method: 'GET',
         headers: {
@@ -115,7 +122,6 @@ function getAllProducts() {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-            //console.log(data); /* *------------------*/
         let card;
         if (data.status === 200) {
             let containerForm = document.getElementById('delete_form');
@@ -140,7 +146,7 @@ function getAllProducts() {
             }
         }
 
-        })
+    })
 
 }
 
@@ -159,13 +165,10 @@ function massDelete(formID) {
     }).then(function(response) {
         return response.json();
     }).then(function(data) {
-           // console.log(data); /* *------------------*/
         let ids;
         if (data.status === 200) {
-            //console.log(formData.getAll('ids[]'));
             ids = formData.getAll('ids[]');
             for (let id of ids) {
-                // console.log(document.getElementById(id));
                 document.getElementById(id).remove();
             }
 
@@ -175,7 +178,7 @@ function massDelete(formID) {
             }
         }
 
-        })
+    })
 
 }
 
@@ -184,13 +187,13 @@ function massDelete(formID) {
 
 
 function validateDecimal(decimalNum, integerPartLength, decimalPartLength) {
-     decimalNum =parseFloat(decimalNum.toString().trim());
+    decimalNum =parseFloat(decimalNum.toString().trim());
 
     let arrNum;
 
     let strNum = decimalNum.toString();
     arrNum = strNum.split('.');
-   //console.log((arrNum[1].length)??0)
+    //console.log((arrNum[1].length)??0)
 
     let integerPart = arrNum[0] ?? 0;
     let decimalPart = arrNum[1] ?? 0;
@@ -199,13 +202,5 @@ function validateDecimal(decimalNum, integerPartLength, decimalPartLength) {
         return false
     }
 
-
-
-
-
 }
-
-// if (window.location.pathname==='/') {
-//      //validateDecimal(111111.555,4,1);
-// }
 
