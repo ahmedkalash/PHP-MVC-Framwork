@@ -9,6 +9,10 @@
 - Inside the public folder run this command to serve the project  `php -S localhost:8080`  you can change the port as you prefer.
 - Uncomment the `set_exception_handler` function in `public/index.php` file to display errors in development mode.
 
+## Requirments 
+- php: 8.1
+- Mysql: 10.11
+
 
 ## Features:
 
