@@ -19,8 +19,8 @@
 - QueryBuilder.
 - Request Class that can be extended to costume request like `MassDeleteRequest` and can be injected to a controller method.
 - Request Validation : The Request Class has a function called validate where you can put your validation logic.  
-  If used method injection on a controller method and injected it will Class that inherit the Request class the router will get an instance of this Request and 
-  call validate method on this class and if it returns true The router will call the target method otherwise it returns a response will the 
+  If you used method injection on a controller method and injected it with a class that inherit the Request class the router will get an instance of this Request and 
+  call validate method on this class and if it returns true The router will call the target method otherwise it returns a response with the 
   appropriate error message.
 - Response Class.
 - Session Class that supports the flash session.
